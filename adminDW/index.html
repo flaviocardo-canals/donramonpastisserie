@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AdminDW · Don Ramón Patisserie</title>
+  <style>
+    :root {
+      --brown: #7b3714;
+      --cream: #fbf5ee;
+      --gold: #e1bc8c;
+      --ink: #33261f;
+      --muted: #765b47;
+      --danger: #a33b2b
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font: 15px Arial, sans-serif
+    }
+
+    header {
+      background: linear-gradient(135deg, #f7ead8, #e8c79f);
+      padding: 25px 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--brown);
+      font-size: 30px
+    }
+
+    header p {
+      margin: 5px 0 0;
+      color: var(--muted)
+    }
+
+    .wrap {
+      max-width: 1250px;
+      margin: auto;
+      padding: 25px 5vw
+    }
+
+    .notice {
+      background: #fff8df;
+      border: 1px solid #e6ca7c;
+      padding: 13px 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      color: #634c1a
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 18px
+    }
+
+    input,
+    select,
+    textarea {
+      border: 1px solid #d7b993;
+      border-radius: 8px;
+      padding: 10px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit
+    }
+
+    input[type=search] {
+      min-width: 250px;
+      flex: 1
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      background: var(--brown);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer
+    }
+
+    button.secondary {
+      background: #ead9c5;
+      color: var(--brown)
+    }
+
+    button.danger {
+      background: var(--danger)
+    }
+
+    .table-wrap {
+      overflow: auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 5px 18px #7b371414
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1050px
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid #eadfd4;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top
+    }
+
+    th {
+      background: var(--brown);
+      color: #fff;
+      position: sticky;
+      top: 0
+    }
+
+    td input,
+    td select,
+    td textarea {
+      width: 100%;
+      min-width: 95px
+    }
+
+    td textarea {
+      min-width: 210px;
+      min-height: 52px;
+      resize: vertical
+    }
+
+    .status {
+      font-weight: bold
+    }
+
+    .status[data-v="SIN STOCK"] {
+      color: var(--danger)
+    }
+
+    .status[data-v="Disponible"] {
+      color: #356b42
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: var(--muted)
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 18px
+    }
+
+    @media(max-width:650px) {
+      header {
+        display: block
+      }
+
+      header button {
+        margin-top: 15px
+      }
+
+      .wrap {
+        padding: 18px 4vw
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div>
+      <h1>Administrador</h1>
+      <p>Gestión de carta · Don Ramón Patisserie</p>
+    </div><button class="secondary" onclick="window.location='../index.html'">Ver menú público</button>
+  </header>
+  <main class="wrap">
+    <div class="notice"><strong>Panel local:</strong> los cambios se guardan en este navegador. Para publicarlos en
+      GitHub, descarga el JSON y reemplaza <code>products.json</code> en el repositorio.</div>
+    <div class="toolbar"><input id="search" type="search" placeholder="Buscar producto…"><select id="filter">
+        <option value="Todas">Todas las categorías</option>
+      </select><button onclick="addProduct()">Agregar producto</button><button onclick="saveLocal()">Guardar
+        localmente</button><button class="secondary" onclick="downloadJSON()">Descargar products.json</button><button
+        class="secondary" onclick="resetData()">Restablecer</button></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Categoría</th>
+            <th>Variante o tamaño</th>
+            <th>Precio</th>
+            <th>Descripción</th>
+            <th>Disponibilidad</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="footer-note">Dirección: Muñoz 921, San Miguel, Buenos Aires · Instagram: @donramon.patisserie · Contacto:
+      linktr.ee/donramonpatisserie</p>
+  </main>
+  <script>
+    const fallback =
+      [{
+        name: 'Latte', category: 'Café', variants: 'Chico / Mediano / Grande', price: '4400 / 4800 / 5200',
+        description: 'Espresso con leche vaporizada y textura suave.', availability: 'Disponible'
+      }];
+    let products = [], original = [];
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+    async function load() { try { const r = await fetch('../products.json'); products = await r.json() } catch (e) { products = fallback } original = JSON.parse(JSON.stringify(products)); fillCategories(); render() }
+    function fillCategories() { const cats = ['Todas', ...new Set(products.map(p => p.category))]; filter.innerHTML = cats.map(c => `<option>${esc(c)}</option>`).join('') }
+    function render() { const q = search.value.toLowerCase(), f = filter.value; const list = products.map((p, i) => ({ ...p, _i: i })).filter(p => (f === 'Todas' || p.category === f) && Object.values(p).join(' ').toLowerCase().includes(q)); rows.innerHTML = list.map(p => `<tr><td><input value="${esc(p.name)}" onchange="edit(${p._i},'name',this.value)"></td><td><input value="${esc(p.category)}" onchange="edit(${p._i},'category',this.value)"></td><td><input value="${esc(p.variants)}" onchange="edit(${p._i},'variants',this.value)"></td><td><input value="${esc(p.price)}" onchange="edit(${p._i},'price',this.value)"></td><td><textarea onchange="edit(${p._i},'description',this.value)">${esc(p.description)}</textarea></td><td><select class="status" data-v="${esc(p.availability)}" onchange="edit(${p._i},'availability',this.value);this.dataset.v=this.value"><option ${p.availability === 'Disponible' ? 'selected' : ''}>Disponible</option><option ${p.availability === 'Consultar' ? 'selected' : ''}>Consultar</option><option ${p.availability === 'SIN STOCK' ? 'selected' : ''}>SIN STOCK</option><option ${p.availability === 'PENDIENTE' ? 'selected' : ''}>PENDIENTE</option></select></td><td><button class="danger" onclick="removeProduct(${p._i})">Borrar</button></td></tr>`).join('') || '<tr><td colspan="7" class="empty">No hay productos para mostrar.</td></tr>' }
+    function edit(i, k, v) { products[i][k] = v }
+    function addProduct() { products.push({ name: 'Nuevo producto', category: 'Café', variants: 'Único', price: '0', description: 'Descripción pendiente de completar.', availability: 'PENDIENTE' }); fillCategories(); render() }
+    function removeProduct(i) { if (confirm('¿Borrar este producto del panel?')) { products.splice(i, 1); fillCategories(); render() } }
+    function saveLocal() { localStorage.setItem('donramon-products', JSON.stringify(products, null, 2)); alert('Cambios guardados en este navegador.') }
+    function downloadJSON() { const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' }), a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'products.json'; a.click(); URL.revokeObjectURL(a.href) }
+    function resetData() { if (confirm('¿Restablecer los datos cargados?')) { products = JSON.parse(JSON.stringify(original)); fillCategories(); render() } }
+    search.oninput = render; filter.onchange = render; load();
+  </script>
+</body>
+
+</html>
