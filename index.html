@@ -1,25 +1,334 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Don Ramón Patisserie · Menú</title><style>
-:root{--brown:#7b3714;--cream:#fbf5ee;--gold:#d9a56f;--ink:#33261f}*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px Arial,sans-serif}header{padding:28px 6vw;background:linear-gradient(135deg,#f7ead8,#e8c79f);display:flex;justify-content:space-between;align-items:center;gap:20px;position:sticky;top:0;z-index:3}h1{margin:0;color:var(--brown);font-size:clamp(28px,5vw,52px);letter-spacing:.04em}header p{margin:7px 0 0;color:#714326}.cart{background:var(--brown);color:white;border:0;border-radius:999px;padding:12px 18px;font-weight:bold;cursor:pointer}.wrap{max-width:1200px;margin:auto;padding:24px 6vw}.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}input,select{padding:12px 14px;border:1px solid #d4b692;border-radius:10px;background:white;color:var(--ink);font-size:15px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 24px}.tab{border:1px solid var(--brown);background:transparent;color:var(--brown);border-radius:999px;padding:10px 14px;cursor:pointer}.tab.active,.tab:hover{background:var(--brown);color:white}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 5px 18px #7b371414;display:flex;flex-direction:column}.photo{height:150px;background:linear-gradient(135deg,#b86b36,#f4d4a6);display:grid;place-items:center;font-size:52px}.card main{padding:16px;flex:1}.card h3{margin:0 0 6px;color:var(--brown)}.tag{font-size:12px;color:#88654c;text-transform:uppercase;letter-spacing:.08em}.desc{line-height:1.4;color:#5d4a3c;margin:9px 0}.price{font-weight:bold;font-size:20px;color:var(--brown)}.status{font-size:12px;margin-top:8px;color:#866044}.sold{color:#a33}.card button{margin:0 16px 16px;padding:11px;border:0;border-radius:9px;background:var(--brown);color:white;cursor:pointer}.card button:disabled{background:#c9c1b9;cursor:not-allowed}.empty{padding:30px;text-align:center;color:#765}.drawer{position:fixed;right:18px;bottom:18px;width:min(390px,calc(100% - 36px));background:white;border:1px solid #dfc7ad;border-radius:18px;box-shadow:0 12px 40px #3b1c1233;padding:18px;display:none;z-index:5}.drawer.open{display:block}.drawer h2{margin:0 0 12px;color:var(--brown)}.row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #eee;padding:8px 0}.close{float:right;border:0;background:transparent;font-size:22px;cursor:pointer}.note{margin-top:26px;font-size:13px;color:#765b47}footer{padding:30px 6vw;text-align:center;color:#765b47}
-</style></head><body><header><div><h1>DON RAMÓN</h1><p>PÂTISSERIE · No olvidarse de lo artesanal</p></div><button class="cart" onclick="toggleCart()">Pedido <span id="count">0</span></button></header><div class="wrap"><div class="tools"><input id="search" placeholder="Buscar producto…"><select id="sort"><option value="default">Orden original</option><option value="price">Precio menor a mayor</option></select></div><nav class="tabs" id="tabs"></nav><section class="grid" id="grid"></section><p class="note">Muñoz 921, San Miguel, Buenos Aires · Martes a sábados 7 a 13 y 16 a 19 hs · Domingos 8 a 13 hs · <a href="https://www.instagram.com/donramon.patisserie" target="_blank">Instagram @donramon.patisserie</a> · <a href="https://linktr.ee/donramonpatisserie" target="_blank">Contacto</a><br>Precios tomados de la carta de referencia. Consultar disponibilidad del día.</p></div><footer>Don Ramón Patisserie · Menú digital</footer><aside class="drawer" id="drawer"><button class="close" onclick="toggleCart()">×</button><h2>Tu pedido</h2><div id="items"></div><p><strong>Total: $<span id="total">0</span></strong></p><button class="cart" onclick="copyOrder()">Copiar resumen</button></aside><script>
-const items=[
-['Latte','Café','Chico / Mediano / Grande','4400 / 4800 / 5200','Espresso con leche vaporizada y textura suave.','Disponible','☕'],['Espresso','Café','Único','3300','Café concentrado de extracción corta.','Disponible','☕'],['Lágrima','Café','Chico / Mediano / Grande','4000 / 4400 / 4800','Leche caliente con un toque de café espresso.','Disponible','☕'],['Doppio','Café','Único','4200','Doble espresso de sabor intenso.','Disponible','☕'],['Cappuccino','Café','Chico / Mediano / Grande','4600 / 5400 / 6200','Espresso, leche vaporizada y espuma cremosa.','Disponible','☕'],['Cortado Flat White','Café','Chico / Mediano / Grande','4800 / 5200 / 5600','Espresso con leche y espuma fina.','Disponible','☕'],['Americano','Café','Chico / Mediano','4000 / 5400','Espresso suavizado con agua caliente.','Disponible','☕'],['Submarino','Infusiones','Único','5200','Leche caliente con chocolate para fundir.','Disponible','🍫'],['Té','Infusiones','Único','5200','Infusión caliente. Variedad a confirmar.','PENDIENTE','🍵'],['Medialuna','Pastelería y laminados','Único','2000','Laminado artesanal de textura tierna.','PENDIENTE','🥐'],['Croissant','Pastelería y laminados','Único','3200','Laminado dorado y hojaldrado.','Consultar','🥐'],['Cookies','Pastelería y laminados','Único','4200','Dulce de leche, chips o Rocklets.','Disponible','🍪'],['Cookies premium','Pastelería y laminados','Único','5000','Variedad del día.','Consultar','🍪'],['Muffin','Pastelería y laminados','Único','3000','Chocolate o frutos rojos.','Disponible','🧁'],['Porción de budín','Pastelería y laminados','Único','3300','Porción artesanal de budín.','Consultar','🍰'],['Pasta frola','Pastelería y laminados','Cuadradito','3000','Porción cuadrada de pasta frola.','Disponible','🍰'],['Minicake individual','Pastelería y laminados','Individual','4800','Torta individual del sabor del día.','Consultar','🍰'],['Minicake 10 cm','Pastelería y laminados','10 cm','8400','Torta pequeña para compartir.','Consultar','🍰'],['Brownie','Pastelería y laminados','Con nuez / Sin nuez','4800','Brownie húmedo e intenso de chocolate.','Disponible','🍫'],['Limoncitos','Pastelería y laminados','Único','3800','Bocado dulce con perfil fresco de limón.','Disponible','🍋'],['Pan de chocolate','Pastelería y laminados','Único','4200','Laminado con chocolate.','Disponible','🥐'],['Medialuna JYQ XL','Salados','XL','0','Medialuna XL de jamón y queso.','SIN STOCK','🥪'],['Croissant JYQ','Salados','Único','6000','Croissant relleno de jamón y queso.','Disponible','🥪'],['Ciabatta multicereal','Salados','Único','0','Ciabatta con jamón y queso.','SIN STOCK','🥪'],['Súper tostado de campo','Salados','Único','10000','Tostado de campo con jamón y queso.','Disponible','🥪'],['Scon de queso','Salados','1/4 unidad / Unidad','3000 / 6000','Scon artesanal de queso.','Disponible','🧀'],['Salsas','Adicionales','Vainilla / Caramelo / Chocolate / Pistacho','800','Salsa para personalizar la bebida.','Disponible','🍯'],['Leche deslactosada','Adicionales','Adicional','1000','Alternativa de leche.','Disponible','🥛'],['Leche de almendras','Adicionales','Adicional','1000','Alternativa vegetal.','Disponible','🥛']];
-let cat='Todas', order=[];const money=n=>new Intl.NumberFormat('es-AR').format(n);function render(){let q=document.getElementById('search').value.toLowerCase();let a=items.filter(x=>(cat==='Todas'||x[1]===cat)&&x[0].toLowerCase().includes(q));if(document.getElementById('sort').value==='price')a.sort((x,y)=>parseInt(x[3])-parseInt(y[3]));document.getElementById('grid').innerHTML=a.map((x,i)=>`<article class="card"><div class="photo">${x[6]}</div><main><div class="tag">${x[1]} · ${x[2]}</div><h3>${x[0]}</h3><p class="desc">${x[4]}</p><div class="price">${x[3].includes('/')?'$'+x[3].split(' / ').map(v=>money(+v)).join(' / $'):'$'+money(+x[3])}</div><div class="status ${x[5]==='SIN STOCK'?'sold':''}">${x[5]}</div></main><button ${x[5]==='SIN STOCK'?'disabled':''} onclick="add(${items.indexOf(x)})">${x[5]==='SIN STOCK'?'Sin stock':'Agregar al pedido'}</button></article>`).join('')||'<p class="empty">No encontramos productos con ese criterio.</p>'}function init(){let cats=['Todas',...new Set(items.map(x=>x[1]))];document.getElementById('tabs').innerHTML=cats.map(x=>`<button class="tab ${x==='Todas'?'active':''}" onclick="cat='${x}';document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');render()">${x}</button>`).join('');render()}function add(i){order.push(items[i]);update();document.getElementById('drawer').classList.add('open')}function update(){document.getElementById('count').textContent=order.length;document.getElementById('items').innerHTML=order.map((x,i)=>`<div class="row"><span>${x[0]}</span><b>$${money(+x[3].split(' / ')[0])}</b></div>`).join('')||'<p>Tu pedido está vacío.</p>';document.getElementById('total').textContent=money(order.reduce((s,x)=>s+ +x[3].split(' / ')[0],0))}function toggleCart(){document.getElementById('drawer').classList.toggle('open')}function copyOrder(){navigator.clipboard?.writeText('Pedido Don Ramón Patisserie\n'+order.map(x=>x[0]).join('\n')+'\nTotal: $'+document.getElementById('total').textContent);alert('Resumen copiado.')}document.getElementById('search').oninput=render;document.getElementById('sort').onchange=render;init();
-</script></body></html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Don Ramón Patisserie · Menú</title>
+    <style>
+        :root {
+            --brown: #7b3714;
+            --cream: #fbf5ee;
+            --gold: #d9a56f;
+            --ink: #33261f
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--cream);
+            color: var(--ink);
+            font: 16px Arial, sans-serif
+        }
+
+        header {
+            padding: 28px 6vw;
+            background: linear-gradient(135deg, #f7ead8, #e8c79f);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 3
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--brown);
+            font-size: clamp(28px, 5vw, 52px);
+            letter-spacing: .04em
+        }
+
+        header p {
+            margin: 7px 0 0;
+            color: #714326
+        }
+
+        .cart {
+            background: var(--brown);
+            color: white;
+            border: 0;
+            border-radius: 999px;
+            padding: 12px 18px;
+            font-weight: bold;
+            cursor: pointer
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: auto;
+            padding: 24px 6vw
+        }
+
+        .tools {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 18px
+        }
+
+        input,
+        select {
+            padding: 12px 14px;
+            border: 1px solid #d4b692;
+            border-radius: 10px;
+            background: white;
+            color: var(--ink);
+            font-size: 15px
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 14px 0 24px
+        }
+
+        .tab {
+            border: 1px solid var(--brown);
+            background: transparent;
+            color: var(--brown);
+            border-radius: 999px;
+            padding: 10px 14px;
+            cursor: pointer
+        }
+
+        .tab.active,
+        .tab:hover {
+            background: var(--brown);
+            color: white
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px #7b371414;
+            display: flex;
+            flex-direction: column
+        }
+
+        .photo {
+            height: 150px;
+            background: linear-gradient(135deg, #b86b36, #f4d4a6);
+            display: grid;
+            place-items: center;
+            font-size: 52px
+        }
+
+        .card main {
+            padding: 16px;
+            flex: 1
+        }
+
+        .card h3 {
+            margin: 0 0 6px;
+            color: var(--brown)
+        }
+
+        .tag {
+            font-size: 12px;
+            color: #88654c;
+            text-transform: uppercase;
+            letter-spacing: .08em
+        }
+
+        .desc {
+            line-height: 1.4;
+            color: #5d4a3c;
+            margin: 9px 0
+        }
+
+        .price {
+            font-weight: bold;
+            font-size: 20px;
+            color: var(--brown)
+        }
+
+        .status {
+            font-size: 12px;
+            margin-top: 8px;
+            color: #866044
+        }
+
+        .sold {
+            color: #a33
+        }
+
+        .card button {
+            margin: 0 16px 16px;
+            padding: 11px;
+            border: 0;
+            border-radius: 9px;
+            background: var(--brown);
+            color: white;
+            cursor: pointer
+        }
+
+        .card button:disabled {
+            background: #c9c1b9;
+            cursor: not-allowed
+        }
+
+        .empty {
+            padding: 30px;
+            text-align: center;
+            color: #765
+        }
+
+        .drawer {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            width: min(390px, calc(100% - 36px));
+            background: white;
+            border: 1px solid #dfc7ad;
+            border-radius: 18px;
+            box-shadow: 0 12px 40px #3b1c1233;
+            padding: 18px;
+            display: none;
+            z-index: 5
+        }
+
+        .drawer.open {
+            display: block
+        }
+
+        .drawer h2 {
+            margin: 0 0 12px;
+            color: var(--brown)
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            border-bottom: 1px solid #eee;
+            padding: 8px 0
+        }
+
+        .close {
+            float: right;
+            border: 0;
+            background: transparent;
+            font-size: 22px;
+            cursor: pointer
+        }
+
+        .note {
+            margin-top: 26px;
+            font-size: 13px;
+            color: #765b47
+        }
+
+        footer {
+            padding: 30px 6vw;
+            text-align: center;
+            color: #765b47
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1>DON RAMÓN</h1>
+            <p>PÂTISSERIE</p>
+            <p>No olvidarse de lo artesanal</p>
+        </div>
+        <button class="cart" onclick="toggleCart()">Pedido (en desarrollo...) <span id="count">0</span></button>
+    </header>
+    <div class="wrap">
+        <div class="tools"><input id="search" placeholder="Buscar producto…"><select id="sort">
+                <option value="default">Orden original</option>
+                <option value="price">Precio menor a mayor</option>
+            </select></div>
+        <nav class="tabs" id="tabs"></nav>
+        <section class="grid" id="grid"></section>
+        <p class="note">Muñoz 921, San Miguel, Buenos Aires · Martes a sábados 7 a 13 y 16 a 19 hs · Domingos 8 a 13 hs
+            · <a href="https://www.instagram.com/donramon.patisserie" target="_blank">Instagram: @donramon.patisserie</a>
+            · <a href="https://linktr.ee/donramonpatisserie" target="_blank">Contacto</a><br>Precios tomados de la carta
+            de referencia. Consultar disponibilidad del día.</p>
+    </div>
+    <footer>Don Ramón Patisserie · Menú digital</footer>
+    <aside class="drawer" id="drawer"><button class="close" onclick="toggleCart()">×</button>
+        <h2>Tu pedido</h2>
+        <div id="items"></div>
+        <p><strong>Total: $<span id="total">0</span></strong></p><button class="cart" onclick="copyOrder()">Copiar
+            resumen</button>
+    </aside>
+    <script>
+        const items = [
+            ['Latte', 'Café', 'Chico / Mediano / Grande', '4400 / 4800 / 5200', 'Espresso con leche vaporizada y textura suave.', 'Disponible', '☕'], ['Espresso', 'Café', 'Único', '3300', 'Café concentrado de extracción corta.', 'Disponible', '☕'], ['Lágrima', 'Café', 'Chico / Mediano / Grande', '4000 / 4400 / 4800', 'Leche caliente con un toque de café espresso.', 'Disponible', '☕'], ['Doppio', 'Café', 'Único', '4200', 'Doble espresso de sabor intenso.', 'Disponible', '☕'], ['Cappuccino', 'Café', 'Chico / Mediano / Grande', '4600 / 5400 / 6200', 'Espresso, leche vaporizada y espuma cremosa.', 'Disponible', '☕'], ['Cortado Flat White', 'Café', 'Chico / Mediano / Grande', '4800 / 5200 / 5600', 'Espresso con leche y espuma fina.', 'Disponible', '☕'], ['Americano', 'Café', 'Chico / Mediano', '4000 / 5400', 'Espresso suavizado con agua caliente.', 'Disponible', '☕'], ['Submarino', 'Infusiones', 'Único', '5200', 'Leche caliente con chocolate para fundir.', 'Disponible', '🍫'], ['Té', 'Infusiones', 'Único', '5200', 'Infusión caliente. Variedad a confirmar.', 'PENDIENTE', '🍵'], ['Medialuna', 'Pastelería y laminados', 'Único', '2000', 'Laminado artesanal de textura tierna.', 'PENDIENTE', '🥐'], ['Croissant', 'Pastelería y laminados', 'Único', '3200', 'Laminado dorado y hojaldrado.', 'Consultar', '🥐'], ['Cookies', 'Pastelería y laminados', 'Único', '4200', 'Dulce de leche, chips o Rocklets.', 'Disponible', '🍪'], ['Cookies premium', 'Pastelería y laminados', 'Único', '5000', 'Variedad del día.', 'Consultar', '🍪'], ['Muffin', 'Pastelería y laminados', 'Único', '3000', 'Chocolate o frutos rojos.', 'Disponible', '🧁'], ['Porción de budín', 'Pastelería y laminados', 'Único', '3300', 'Porción artesanal de budín.', 'Consultar', '🍰'], ['Pasta frola', 'Pastelería y laminados', 'Cuadradito', '3000', 'Porción cuadrada de pasta frola.', 'Disponible', '🍰'], ['Minicake individual', 'Pastelería y laminados', 'Individual', '4800', 'Torta individual del sabor del día.', 'Consultar', '🍰'], ['Minicake 10 cm', 'Pastelería y laminados', '10 cm', '8400', 'Torta pequeña para compartir.', 'Consultar', '🍰'], ['Brownie', 'Pastelería y laminados', 'Con nuez / Sin nuez', '4800', 'Brownie húmedo e intenso de chocolate.', 'Disponible', '🍫'], ['Limoncitos', 'Pastelería y laminados', 'Único', '3800', 'Bocado dulce con perfil fresco de limón.', 'Disponible', '🍋'], ['Pan de chocolate', 'Pastelería y laminados', 'Único', '4200', 'Laminado con chocolate.', 'Disponible', '🥐'], ['Medialuna JYQ XL', 'Salados', 'XL', '0', 'Medialuna XL de jamón y queso.', 'SIN STOCK', '🥪'], ['Croissant JYQ', 'Salados', 'Único', '6000', 'Croissant relleno de jamón y queso.', 'Disponible', '🥪'], ['Ciabatta multicereal', 'Salados', 'Único', '0', 'Ciabatta con jamón y queso.', 'SIN STOCK', '🥪'], ['Súper tostado de campo', 'Salados', 'Único', '10000', 'Tostado de campo con jamón y queso.', 'Disponible', '🥪'], ['Scon de queso', 'Salados', '1/4 unidad / Unidad', '3000 / 6000', 'Scon artesanal de queso.', 'Disponible', '🧀'], ['Salsas', 'Adicionales', 'Vainilla / Caramelo / Chocolate / Pistacho', '800', 'Salsa para personalizar la bebida.', 'Disponible', '🍯'], ['Leche deslactosada', 'Adicionales', 'Adicional', '1000', 'Alternativa de leche.', 'Disponible', '🥛'], ['Leche de almendras', 'Adicionales', 'Adicional', '1000', 'Alternativa vegetal.', 'Disponible', '🥛']];
+        let cat = 'Todas', order = []; const money = n => new Intl.NumberFormat('es-AR').format(n); function render() { let q = document.getElementById('search').value.toLowerCase(); let a = items.filter(x => (cat === 'Todas' || x[1] === cat) && x[0].toLowerCase().includes(q)); if (document.getElementById('sort').value === 'price') a.sort((x, y) => parseInt(x[3]) - parseInt(y[3])); document.getElementById('grid').innerHTML = a.map((x, i) => `<article class="card"><div class="photo">${x[6]}</div><main><div class="tag">${x[1]} · ${x[2]}</div><h3>${x[0]}</h3><p class="desc">${x[4]}</p><div class="price">${x[3].includes('/') ? '$' + x[3].split(' / ').map(v => money(+v)).join(' / $') : '$' + money(+x[3])}</div><div class="status ${x[5] === 'SIN STOCK' ? 'sold' : ''}">${x[5]}</div></main><button ${x[5] === 'SIN STOCK' ? 'disabled' : ''} onclick="add(${items.indexOf(x)})">${x[5] === 'SIN STOCK' ? 'Sin stock' : 'Agregar al pedido'}</button></article>`).join('') || '<p class="empty">No encontramos productos con ese criterio.</p>' } function init() { let cats = ['Todas', ...new Set(items.map(x => x[1]))]; document.getElementById('tabs').innerHTML = cats.map(x => `<button class="tab ${x === 'Todas' ? 'active' : ''}" onclick="cat='${x}';document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');render()">${x}</button>`).join(''); render() } function add(i) { order.push(items[i]); update(); document.getElementById('drawer').classList.add('open') } function update() { document.getElementById('count').textContent = order.length; document.getElementById('items').innerHTML = order.map((x, i) => `<div class="row"><span>${x[0]}</span><b>$${money(+x[3].split(' / ')[0])}</b></div>`).join('') || '<p>Tu pedido está vacío.</p>'; document.getElementById('total').textContent = money(order.reduce((s, x) => s + +x[3].split(' / ')[0], 0)) } function toggleCart() { document.getElementById('drawer').classList.toggle('open') } function copyOrder() { navigator.clipboard?.writeText('Pedido Don Ramón Patisserie\n' + order.map(x => x[0]).join('\n') + '\nTotal: $' + document.getElementById('total').textContent); alert('Resumen copiado.') } document.getElementById('search').oninput = render; document.getElementById('sort').onchange = render; init();
+    </script>
+</body>
+
+</html>
 <style>
-header:before{content:"";display:block;flex:0 0 78px;height:78px;background:url("02-banco-visual/logo-don-ramon-patisserie.jpg") center/cover no-repeat;border-radius:50%;box-shadow:0 3px 10px #7b371425}
-.remove{border:1px solid #c99b78!important;background:white!important;color:#7b3714!important;margin:0!important;padding:4px 8px!important;font-size:12px}
-@media(max-width:520px){header:before{width:56px;height:56px}header{padding:18px 5vw}h1{font-size:28px}}
+    header:before {
+        content: "";
+        display: block;
+        flex: 0 0 78px;
+        height: 78px;
+        background: url("02-banco-visual/logo-don-ramon-patisserie.jpg") center/cover no-repeat;
+        border-radius: 50%;
+        box-shadow: 0 3px 10px #7b371425
+    }
+
+    .remove {
+        border: 1px solid #c99b78 !important;
+        background: white !important;
+        color: #7b3714 !important;
+        margin: 0 !important;
+        padding: 4px 8px !important;
+        font-size: 12px
+    }
+
+    @media(max-width:520px) {
+        header:before {
+            width: 56px;
+            height: 56px
+        }
+
+        header {
+            padding: 18px 5vw
+        }
+
+        h1 {
+            font-size: 28px
+        }
+    }
 </style>
 <script>
-function update(){document.getElementById('count').textContent=order.length;document.getElementById('items').innerHTML=order.map((x,i)=>`<div class="row"><span>${x[0]}</span><b>$${money(+x[3].split(' / ')[0])}</b><button class="remove" onclick="removeItem(${i})">Quitar</button></div>`).join('')||'<p>Tu pedido está vacío.</p>';document.getElementById('total').textContent=money(order.reduce((s,x)=>s+ +x[3].split(' / ')[0],0))}
-function removeItem(i){order.splice(i,1);update()}
-update();
+    function update() { document.getElementById('count').textContent = order.length; document.getElementById('items').innerHTML = order.map((x, i) => `<div class="row"><span>${x[0]}</span><b>$${money(+x[3].split(' / ')[0])}</b><button class="remove" onclick="removeItem(${i})">Quitar</button></div>`).join('') || '<p>Tu pedido está vacío.</p>'; document.getElementById('total').textContent = money(order.reduce((s, x) => s + +x[3].split(' / ')[0], 0)) }
+    function removeItem(i) { order.splice(i, 1); update() }
+    update();
 </script>
-<style>.photo{overflow:hidden}.photo img{width:100%;height:100%;object-fit:cover;display:block}</style>
+<style>
+    .photo {
+        overflow: hidden
+    }
+
+    .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block
+    }
+</style>
 <script>
-const photoMap={'Latte':'foto-cafe.jpeg','Espresso':'foto-cafe.jpeg','Lágrima':'foto-cafe.jpeg','Doppio':'foto-cafe.jpeg','Cappuccino':'foto-cafe.jpeg','Cortado Flat White':'foto-cafe.jpeg','Americano':'foto-cafe.jpeg','Medialuna':'foto-laminados.jpeg','Croissant':'foto-laminados.jpeg','Pan de chocolate':'foto-laminados.jpeg','Cookies':'foto-cookies.jpeg','Cookies premium':'foto-cookies.jpeg','Minicake individual':'foto-torta.jpeg','Minicake 10 cm':'foto-tarta-limon.jpeg','Limoncitos':'foto-tarta-limon.jpeg'};
-const previousRender=render;render=function(){previousRender();document.querySelectorAll('.card').forEach(card=>{const name=card.querySelector('h3')?.textContent.trim();const file=photoMap[name];if(file){const photo=card.querySelector('.photo');photo.innerHTML=`<img src="02-banco-visual/${file}" alt="${name}" loading="lazy">`}})};render();
+    const photoMap = { 'Latte': 'foto-cafe.jpeg', 'Espresso': 'foto-cafe.jpeg', 'Lágrima': 'foto-cafe.jpeg', 'Doppio': 'foto-cafe.jpeg', 'Cappuccino': 'foto-cafe.jpeg', 'Cortado Flat White': 'foto-cafe.jpeg', 'Americano': 'foto-cafe.jpeg', 'Medialuna': 'foto-laminados.jpeg', 'Croissant': 'foto-laminados.jpeg', 'Pan de chocolate': 'foto-laminados.jpeg', 'Cookies': 'foto-cookies.jpeg', 'Cookies premium': 'foto-cookies.jpeg', 'Minicake individual': 'foto-torta.jpeg', 'Minicake 10 cm': 'foto-tarta-limon.jpeg', 'Limoncitos': 'foto-tarta-limon.jpeg' };
+    const previousRender = render; render = function () { previousRender(); document.querySelectorAll('.card').forEach(card => { const name = card.querySelector('h3')?.textContent.trim(); const file = photoMap[name]; if (file) { const photo = card.querySelector('.photo'); photo.innerHTML = `<img src="02-banco-visual/${file}" alt="${name}" loading="lazy">` } }) }; render();
 </script>
 <script>document.querySelector('button[onclick="copyOrder()"]')?.remove();</script>
