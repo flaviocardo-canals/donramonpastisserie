@@ -245,7 +245,7 @@
             <h1>DON RAMÓN PÂTISSERIE</h1>
             <p>No olvidarse de lo artesanal</p>
         </div>
-        <button class="cart" onclick="toggleCart()">Pedido (en desarrollo...) <span id="count">0</span></button>
+        <button class="cart" onclick="toggleCart()">Pedido <span id="count">0</span></button>
     </header>
     <div class="wrap">
         <div class="tools"><input id="search" placeholder="Buscar producto…"><select id="sort">
@@ -263,13 +263,32 @@
     <aside class="drawer" id="drawer"><button class="close" onclick="toggleCart()">×</button>
         <h2>Tu pedido</h2>
         <div id="items"></div>
-        <p><strong>Total: $<span id="total">0</span></strong></p><button class="cart" onclick="copyOrder()">Copiar
-            resumen</button>
+       <p><strong>Total: $<span id="total">0</span></strong></p>
+        <button class="cart" onclick="sendWhatsApp()">Enviar por WhatsApp</button>
+        <button class="cart" style="background:transparent;color:var(--brown);border:1px solid var(--brown);margin-top:8px" onclick="copyOrder()">Copiar resumen</button>
     </aside>
     <script>
         const items = [
             ['Latte', 'Café', 'Chico / Mediano / Grande', '4400 / 4800 / 5200', 'Espresso con leche vaporizada y textura suave.', 'Disponible', '☕'], ['Espresso', 'Café', 'Único', '3300', 'Café concentrado de extracción corta.', 'Disponible', '☕'], ['Lágrima', 'Café', 'Chico / Mediano / Grande', '4000 / 4400 / 4800', 'Leche caliente con un toque de café espresso.', 'Disponible', '☕'], ['Doppio', 'Café', 'Único', '4200', 'Doble espresso de sabor intenso.', 'Disponible', '☕'], ['Cappuccino', 'Café', 'Chico / Mediano / Grande', '4600 / 5400 / 6200', 'Espresso, leche vaporizada y espuma cremosa.', 'Disponible', '☕'], ['Cortado Flat White', 'Café', 'Chico / Mediano / Grande', '4800 / 5200 / 5600', 'Espresso con leche y espuma fina.', 'Disponible', '☕'], ['Americano', 'Café', 'Chico / Mediano', '4000 / 5400', 'Espresso suavizado con agua caliente.', 'Disponible', '☕'], ['Submarino', 'Infusiones', 'Único', '5200', 'Leche caliente con chocolate para fundir.', 'Disponible', '🍫'], ['Té', 'Infusiones', 'Único', '5200', 'Infusión caliente. Variedad a confirmar.', 'PENDIENTE', '🍵'], ['Medialuna', 'Pastelería y laminados', 'Único', '2000', 'Laminado artesanal de textura tierna.', 'PENDIENTE', '🥐'], ['Croissant', 'Pastelería y laminados', 'Único', '3200', 'Laminado dorado y hojaldrado.', 'Consultar', '🥐'], ['Cookies', 'Pastelería y laminados', 'Único', '4200', 'Dulce de leche, chips o Rocklets.', 'Disponible', '🍪'], ['Cookies premium', 'Pastelería y laminados', 'Único', '5000', 'Variedad del día.', 'Consultar', '🍪'], ['Muffin', 'Pastelería y laminados', 'Único', '3000', 'Chocolate o frutos rojos.', 'Disponible', '🧁'], ['Porción de budín', 'Pastelería y laminados', 'Único', '3300', 'Porción artesanal de budín.', 'Consultar', '🍰'], ['Pasta frola', 'Pastelería y laminados', 'Cuadradito', '3000', 'Porción cuadrada de pasta frola.', 'Disponible', '🍰'], ['Minicake individual', 'Pastelería y laminados', 'Individual', '4800', 'Torta individual del sabor del día.', 'Consultar', '🍰'], ['Minicake 10 cm', 'Pastelería y laminados', '10 cm', '8400', 'Torta pequeña para compartir.', 'Consultar', '🍰'], ['Brownie', 'Pastelería y laminados', 'Con nuez / Sin nuez', '4800', 'Brownie húmedo e intenso de chocolate.', 'Disponible', '🍫'], ['Limoncitos', 'Pastelería y laminados', 'Único', '3800', 'Bocado dulce con perfil fresco de limón.', 'Disponible', '🍋'], ['Pan de chocolate', 'Pastelería y laminados', 'Único', '4200', 'Laminado con chocolate.', 'Disponible', '🥐'], ['Medialuna JYQ XL', 'Salados', 'XL', '0', 'Medialuna XL de jamón y queso.', 'SIN STOCK', '🥪'], ['Croissant JYQ', 'Salados', 'Único', '6000', 'Croissant relleno de jamón y queso.', 'Disponible', '🥪'], ['Ciabatta multicereal', 'Salados', 'Único', '0', 'Ciabatta con jamón y queso.', 'SIN STOCK', '🥪'], ['Súper tostado de campo', 'Salados', 'Único', '10000', 'Tostado de campo con jamón y queso.', 'Disponible', '🥪'], ['Scon de queso', 'Salados', '1/4 unidad / Unidad', '3000 / 6000', 'Scon artesanal de queso.', 'Disponible', '🧀'], ['Salsas', 'Adicionales', 'Vainilla / Caramelo / Chocolate / Pistacho', '800', 'Salsa para personalizar la bebida.', 'Disponible', '🍯'], ['Leche deslactosada', 'Adicionales', 'Adicional', '1000', 'Alternativa de leche.', 'Disponible', '🥛'], ['Leche de almendras', 'Adicionales', 'Adicional', '1000', 'Alternativa vegetal.', 'Disponible', '🥛']];
         let cat = 'Todas', order = []; const money = n => new Intl.NumberFormat('es-AR').format(n); function render() { let q = document.getElementById('search').value.toLowerCase(); let a = items.filter(x => (cat === 'Todas' || x[1] === cat) && x[0].toLowerCase().includes(q)); if (document.getElementById('sort').value === 'price') a.sort((x, y) => parseInt(x[3]) - parseInt(y[3])); document.getElementById('grid').innerHTML = a.map((x, i) => `<article class="card"><div class="photo">${x[6]}</div><main><div class="tag">${x[1]} · ${x[2]}</div><h3>${x[0]}</h3><p class="desc">${x[4]}</p><div class="price">${x[3].includes('/') ? '$' + x[3].split(' / ').map(v => money(+v)).join(' / $') : '$' + money(+x[3])}</div><div class="status ${x[5] === 'SIN STOCK' ? 'sold' : ''}">${x[5]}</div></main><button ${x[5] === 'SIN STOCK' ? 'disabled' : ''} onclick="add(${items.indexOf(x)})">${x[5] === 'SIN STOCK' ? 'Sin stock' : 'Agregar al pedido'}</button></article>`).join('') || '<p class="empty">No encontramos productos con ese criterio.</p>' } function init() { let cats = ['Todas', ...new Set(items.map(x => x[1]))]; document.getElementById('tabs').innerHTML = cats.map(x => `<button class="tab ${x === 'Todas' ? 'active' : ''}" onclick="cat='${x}';document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');render()">${x}</button>`).join(''); render() } function add(i) { order.push(items[i]); update(); document.getElementById('drawer').classList.add('open') } function update() { document.getElementById('count').textContent = order.length; document.getElementById('items').innerHTML = order.map((x, i) => `<div class="row"><span>${x[0]}</span><b>$${money(+x[3].split(' / ')[0])}</b></div>`).join('') || '<p>Tu pedido está vacío.</p>'; document.getElementById('total').textContent = money(order.reduce((s, x) => s + +x[3].split(' / ')[0], 0)) } function toggleCart() { document.getElementById('drawer').classList.toggle('open') } function copyOrder() { navigator.clipboard?.writeText('Pedido Don Ramón Patisserie\n' + order.map(x => x[0]).join('\n') + '\nTotal: $' + document.getElementById('total').textContent); alert('Resumen copiado.') } document.getElementById('search').oninput = render; document.getElementById('sort').onchange = render; init();
+
+        function sendWhatsApp() {
+            if (order.length === 0) {
+                alert('Tu pedido está vacío.');
+                return;
+            }
+
+            const numero = '5491156372876'; 
+
+            const lineas = order.map(x => `• ${x[0]} — $${money(+x[3].split(' / ')[0])}`).join('\n');
+            const total = document.getElementById('total').textContent;
+
+            const mensaje = `Hola! Quiero hacer este pedido en Don Ramón Patisserie:\n\n${lineas}\n\nTotal: $${total}`;
+
+            const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+
     </script>
 </body>
 
@@ -330,4 +349,3 @@
     const photoMap = { 'Latte': 'foto-cafe.jpeg', 'Espresso': 'foto-cafe.jpeg', 'Lágrima': 'foto-cafe.jpeg', 'Doppio': 'foto-cafe.jpeg', 'Cappuccino': 'foto-cafe.jpeg', 'Cortado Flat White': 'foto-cafe.jpeg', 'Americano': 'foto-cafe.jpeg', 'Medialuna': 'foto-laminados.jpeg', 'Croissant': 'foto-laminados.jpeg', 'Pan de chocolate': 'foto-laminados.jpeg', 'Cookies': 'foto-cookies.jpeg', 'Cookies premium': 'foto-cookies.jpeg', 'Minicake individual': 'foto-torta.jpeg', 'Minicake 10 cm': 'foto-tarta-limon.jpeg', 'Limoncitos': 'foto-tarta-limon.jpeg' };
     const previousRender = render; render = function () { previousRender(); document.querySelectorAll('.card').forEach(card => { const name = card.querySelector('h3')?.textContent.trim(); const file = photoMap[name]; if (file) { const photo = card.querySelector('.photo'); photo.innerHTML = `<img src="02-banco-visual/${file}" alt="${name}" loading="lazy">` } }) }; render();
 </script>
-<script>document.querySelector('button[onclick="copyOrder()"]')?.remove();</script>
