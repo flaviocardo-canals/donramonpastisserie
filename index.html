@@ -454,15 +454,24 @@
             }
         }
 
+        .titulo {
+            font-family: 'Playfair Display', 'Georgia', serif;
+            font-weight: 700;
+            color: #8B5E3C; /* tono marrón cálido similar al logo */
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            }
+
     </style>
 </head>
 
 <body>
     <header>
-        <div>
-            <h1>DON RAMÓN PÂTISSERIE</h1>
-            <p>No olvidarse de lo artesanal</p>
+        <div class="don-ramon">
+            <h1 class="titulo">DON RAMÓN PÂTISSERIE</h1>
+            <p>Pastelería artesanal y café al paso | Hecho con amor</p>
         </div>
+
         <button class="cart" onclick="toggleCart()">Pedido <span id="count">0</span></button>
     </header>
 
@@ -470,7 +479,7 @@
         <div class="tools">
             <input id="search" placeholder="Buscar producto…">
             <select id="sort">
-                <option value="default">Orden original</option>
+                <option value="default">Orden</option>
                 <option value="price">Precio menor a mayor</option>
             </select>
         </div>
@@ -482,7 +491,7 @@
             <div class="footer-location"> <strong>📍 Don Ramón Pâtisserie</strong> <span>Muñoz 921 · San Miguel - Buenos
                     Aires</span> </div>
             <div class="footer-hours"> <strong>🕐 Horarios</strong> <span>Martes a sábados: 7 a 13 y 16 a 19
-                    horas</span><span>- Domingos: 8 a 13 horas</span> </div>
+                    horas</span><span>Domingos: 8 a 13 horas</span> </div>
             <div class="footer-links"> <a href="https://www.instagram.com/donramon.patisserie" target="_blank"> 📷
                     Instagram </a> <a href="https://linktr.ee/donramonpatisserie" target="_blank"> 🔗 Contacto </a>
             </div>
