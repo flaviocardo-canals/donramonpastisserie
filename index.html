@@ -76,20 +76,17 @@
 
         .tools {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 18px
+            gap: 10px; /* espacio entre elementos */
         }
 
-        input,
-        select {
-            padding: 12px 14px;
-            border: 1px solid #d4b692;
-            border-radius: 10px;
-            background: white;
-            color: var(--ink);
-            font-size: 15px
+            .tools input,
+            .tools select {
+            max-width: 200px;   /* ancho máximo más reducido */
+            padding: 6px 10px;  /* menos relleno interno */
+            font-size: 14px;    /* tipografía más compacta */
         }
+
+
 
         .tabs {
             display: flex;
