@@ -126,6 +126,19 @@
             background: var(--warning);
         }
 
+        /* Disponibilidad del día */
+        .availability-badge {
+            display: inline-block;
+            margin: 8px 0 0;
+            padding: 6px 12px;
+            border: 1px solid #d9bfa5;
+            border-radius: 999px;
+            background: #fffaf5;
+            color: #714326;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
         .cart {
             padding: 12px 18px;
             border: 0;
@@ -188,6 +201,60 @@
         .tools input {
             flex: 1;
             min-width: 190px;
+        }
+
+        /* Resultados de búsqueda */
+        .result-count {
+            margin: 10px 0 0;
+            color: #88654c;
+            font-size: 12px;
+        }
+
+        /* Banner repetir pedido */
+        .repeat-banner {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 16px 0 0;
+            padding: 12px 16px;
+            border: 1px solid var(--gold);
+            border-radius: 14px;
+            background: #fff6e9;
+            color: var(--brown-dark);
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .repeat-banner-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .repeat-banner-btn {
+            padding: 8px 14px;
+            border: 0;
+            border-radius: 999px;
+            background: var(--brown);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .repeat-banner-btn:hover {
+            background: var(--brown-dark);
+        }
+
+        .repeat-banner-dismiss {
+            border: 0;
+            background: transparent;
+            color: var(--brown-dark);
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
         }
 
         /* Destacados del día */
@@ -500,6 +567,24 @@
             cursor: not-allowed;
         }
 
+        /* Controles de cantidad en la tarjeta */
+        .card-controls {
+            margin: 0 16px 16px;
+        }
+
+        .card-controls .quantity-controls {
+            justify-content: center;
+            padding: 7px;
+        }
+
+        .card-controls .quantity-value {
+            font-size: 15px;
+        }
+
+        .card-controls button {
+            margin: 0;
+        }
+
         .empty {
             grid-column: 1 / -1;
             padding: 30px;
@@ -591,9 +676,27 @@
             display: block;
         }
 
+        /* Encabezado fijo dentro del carrito */
+        .drawer-sticky-header {
+            position: sticky;
+            top: -18px;
+            z-index: 2;
+            margin: -18px -18px 12px;
+            padding: 18px 18px 12px;
+            background: white;
+            border-bottom: 1px solid #ead8c5;
+        }
+
         .drawer h2 {
-            margin: 0 0 12px;
+            margin: 0 0 4px;
             color: var(--brown);
+        }
+
+        .drawer-mini-total {
+            margin: 0;
+            color: var(--brown);
+            font-size: 13px;
+            font-weight: bold;
         }
 
         .close {
@@ -733,6 +836,54 @@
             color: #765b47;
             font-size: 12px;
             line-height: 1.4;
+        }
+
+        /* Toast de confirmación */
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            z-index: 30;
+            padding: 11px 18px;
+            border-radius: 999px;
+            background: var(--brown-dark);
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 8px 24px #3b1c1240;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, 10px);
+            transition: opacity .25s ease, transform .25s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        /* Botón flotante del carrito (mobile) */
+        .fab-cart {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 15;
+            display: none;
+            align-items: center;
+            gap: 7px;
+            padding: 13px 18px;
+            border: 0;
+            border-radius: 999px;
+            background: var(--brown);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 8px 22px #7b371450;
+        }
+
+        .fab-cart.fab-hidden {
+            display: none !important;
         }
 
         /* Pie */
@@ -892,6 +1043,10 @@
             .footer-note {
                 font-size: 9px;
             }
+
+            .fab-cart.fab-visible {
+                display: flex;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -921,6 +1076,8 @@
                 <span class="shop-status-dot"></span>
                 <span>Horarios: martes a sábados 7–13 y 16–19 · domingos 8–13</span>
             </div>
+
+            <p class="availability-badge" id="availabilityBadge"></p>
         </div>
 
         <button class="cart" id="cartButton" onclick="toggleCart()" aria-label="Ver pedido">
@@ -936,6 +1093,14 @@
                 <option value="default">Ordenar por</option>
                 <option value="price">Precio: menor a mayor</option>
             </select>
+        </div>
+
+        <div class="repeat-banner" id="repeatBanner" role="region" aria-label="Repetir pedido anterior">
+            <span>👋 ¿Repetimos tu pedido de la última vez?</span>
+            <div class="repeat-banner-actions">
+                <button type="button" class="repeat-banner-btn" onclick="repeatLastOrder()">Repetir pedido</button>
+                <button type="button" class="repeat-banner-dismiss" onclick="dismissRepeatBanner()" aria-label="Cerrar aviso">×</button>
+            </div>
         </div>
 
         <section class="featured-section" aria-labelledby="featured-title">
@@ -1024,6 +1189,8 @@
 
         <nav class="tabs" id="tabs" aria-label="Categorías de productos"></nav>
 
+        <p class="result-count" id="resultCount"></p>
+
         <section class="grid" id="grid" aria-live="polite"></section>
 
         <section class="footer-info">
@@ -1058,9 +1225,13 @@
     <footer>Don Ramón Pâtisserie · Menú digital</footer>
 
     <aside class="drawer" id="drawer" aria-label="Tu pedido">
-        <button class="close" onclick="toggleCart()" aria-label="Cerrar pedido">×</button>
-
-        <h2>Tu pedido</h2>
+        <div class="drawer-sticky-header">
+            <button class="close" onclick="toggleCart()" aria-label="Cerrar pedido">×</button>
+            <h2>Tu pedido</h2>
+            <p class="drawer-mini-total">
+                Total: $<span id="totalMini">0</span> · <span id="countMini">0</span> producto(s)
+            </p>
+        </div>
 
         <div id="items"></div>
 
@@ -1114,7 +1285,15 @@
         </button>
     </aside>
 
+    <button type="button" class="fab-cart fab-visible" id="fabCart" onclick="toggleCart()" aria-label="Ver pedido">
+        🛒 <span id="fabCount">0</span> · $<span id="fabTotal">0</span>
+    </button>
+
     <script>
+        const ORDER_KEY = 'donramonOrder';
+        const NAME_KEY = 'donramonCustomerName';
+        const LAST_ORDER_KEY = 'donramonLastOrder';
+
         const items = [
             ['Latte', 'Café', 'Chico / Mediano / Grande', '4400 / 4800 / 5200', 'Espresso con leche vaporizada y textura suave.', 'Disponible', '☕'],
             ['Espresso', 'Café', 'Único', '3300', 'Café concentrado de extracción corta.', 'Disponible', '☕'],
@@ -1153,7 +1332,9 @@
 
         let cat = 'Todas';
         let quickFilter = 'all';
-        let order = [];
+        let order = loadCurrentOrder();
+        let toastTimer;
+        let searchDebounceTimer;
 
         const money = value => new Intl.NumberFormat('es-AR').format(value);
 
@@ -1165,6 +1346,69 @@
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#039;');
         }
+
+        /* ---------- Persistencia (localStorage) ---------- */
+
+        function loadCurrentOrder() {
+            try {
+                const raw = localStorage.getItem(ORDER_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed) ? parsed : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveCurrentOrder() {
+            try {
+                localStorage.setItem(ORDER_KEY, JSON.stringify(order));
+            } catch {
+                // localStorage no disponible (modo privado, cuota llena, etc.) — el pedido sigue en memoria
+            }
+        }
+
+        function getLastOrder() {
+            try {
+                const raw = localStorage.getItem(LAST_ORDER_KEY);
+                const parsed = raw ? JSON.parse(raw) : null;
+                return Array.isArray(parsed) && parsed.length > 0 ? parsed : null;
+            } catch {
+                return null;
+            }
+        }
+
+        function saveLastOrder() {
+            if (order.length === 0) return;
+
+            try {
+                localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order));
+            } catch {
+                // si falla el guardado no bloqueamos el envío del pedido
+            }
+        }
+
+        /* ---------- Toast ---------- */
+
+        function showToast(message) {
+            let toast = document.getElementById('toast');
+
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast';
+                toast.className = 'toast';
+                toast.setAttribute('role', 'status');
+                toast.setAttribute('aria-live', 'polite');
+                document.body.appendChild(toast);
+            }
+
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 1700);
+        }
+
+        /* ---------- Utilidades de producto ---------- */
 
         function getVariants(item) {
             const variants = item[2].split(' / ').map(value => value.trim());
@@ -1216,6 +1460,68 @@
 
             return true;
         }
+
+        function getQuantityInCart(name, variant) {
+            const found = order.find(entry => entry.name === name && entry.variant === variant);
+            return found ? found.quantity : 0;
+        }
+
+        /* ---------- Controles de cantidad en la card ---------- */
+
+        function cardControlsHtml(index, item) {
+            const qty = getQuantityInCart(item[0], null);
+
+            if (qty > 0) {
+                return `
+                    <div class="quantity-controls" aria-label="Cantidad de ${escapeHtml(item[0])}">
+                        <button type="button" onclick="quickDecrease(${index})" aria-label="Quitar una unidad de ${escapeHtml(item[0])}">−</button>
+                        <span class="quantity-value">${qty}</span>
+                        <button type="button" onclick="quickIncrease(${index})" aria-label="Agregar una unidad de ${escapeHtml(item[0])}">+</button>
+                    </div>
+                `;
+            }
+
+            return `
+                <button type="button" id="add-btn-${index}" onclick="startAdd(${index})">
+                    Agregar al pedido
+                </button>
+            `;
+        }
+
+        function syncCardControls() {
+            items.forEach((item, index) => {
+                if (getVariants(item).length > 0 || item[5] === 'SIN STOCK') return;
+
+                const container = document.getElementById('card-controls-' + index);
+                if (!container) return;
+
+                container.innerHTML = cardControlsHtml(index, item);
+            });
+        }
+
+        function quickIncrease(index) {
+            const item = items[index];
+            addItem(item, null, Number(item[3]), { openDrawer: false, notify: true });
+            syncCardControls();
+        }
+
+        function quickDecrease(index) {
+            const item = items[index];
+            const orderIndex = order.findIndex(entry => entry.name === item[0] && entry.variant === null);
+
+            if (orderIndex === -1) return;
+
+            if (order[orderIndex].quantity > 1) {
+                order[orderIndex].quantity -= 1;
+            } else {
+                order.splice(orderIndex, 1);
+            }
+
+            update();
+            syncCardControls();
+        }
+
+        /* ---------- Render principal ---------- */
 
         function render() {
             const query = document.getElementById('search').value.trim().toLowerCase();
@@ -1303,23 +1609,28 @@
                                 ` : ''}
                             </main>
 
-                            <button
-                                type="button"
-                                ${isOutOfStock ? 'disabled' : ''}
-                                id="add-btn-${index}"
-                                onclick="startAdd(${index})"
-                            >
-                                ${isOutOfStock
-                                    ? 'Sin stock'
-                                    : variants.length > 0
-                                        ? 'Elegir opción'
-                                        : 'Agregar al pedido'
-                                }
-                            </button>
+                            ${variants.length === 0 && !isOutOfStock
+                                ? `<div class="card-controls" id="card-controls-${index}">${cardControlsHtml(index, item)}</div>`
+                                : `
+                                    <button
+                                        type="button"
+                                        ${isOutOfStock ? 'disabled' : ''}
+                                        id="add-btn-${index}"
+                                        onclick="startAdd(${index})"
+                                    >
+                                        ${isOutOfStock ? 'Sin stock' : 'Elegir opción'}
+                                    </button>
+                                `
+                            }
                         </article>
                     `;
                 }).join('')
                 || '<p class="empty">No encontramos productos con ese criterio.</p>';
+
+            const resultCountEl = document.getElementById('resultCount');
+            resultCountEl.textContent = filteredItems.length === items.length
+                ? `${filteredItems.length} productos en el menú`
+                : `${filteredItems.length} ${filteredItems.length === 1 ? 'resultado' : 'resultados'}`;
 
             applyPhotos();
         }
@@ -1396,7 +1707,9 @@
             }
         }
 
-        function addItem(item, variant, price) {
+        function addItem(item, variant, price, options = {}) {
+            const { openDrawer = true, notify = true } = options;
+
             const existingItem = order.find(orderItem =>
                 orderItem.name === item[0] &&
                 orderItem.variant === variant
@@ -1425,7 +1738,14 @@
                 cartButton.classList.remove('cart-bump');
             }, 350);
 
-            document.getElementById('drawer').classList.add('open');
+            if (notify) {
+                showToast(`✓ ${item[0]}${variant ? ' (' + variant + ')' : ''} agregado`);
+            }
+
+            if (openDrawer) {
+                document.getElementById('drawer').classList.add('open');
+                setFabHidden(true);
+            }
         }
 
         function update() {
@@ -1497,11 +1817,18 @@
             );
 
             document.getElementById('total').textContent = money(total);
+            document.getElementById('totalMini').textContent = money(total);
+            document.getElementById('countMini').textContent = totalProducts;
+            document.getElementById('fabCount').textContent = totalProducts;
+            document.getElementById('fabTotal').textContent = money(total);
+
+            saveCurrentOrder();
         }
 
         function increaseQuantity(index) {
             order[index].quantity += 1;
             update();
+            syncCardControls();
         }
 
         function decreaseQuantity(index) {
@@ -1512,16 +1839,92 @@
             }
 
             update();
+            syncCardControls();
         }
 
         function removeItem(index) {
             order.splice(index, 1);
             update();
+            syncCardControls();
         }
 
         function toggleCart() {
-            document.getElementById('drawer').classList.toggle('open');
+            const drawer = document.getElementById('drawer');
+            drawer.classList.toggle('open');
+            setFabHidden(drawer.classList.contains('open'));
         }
+
+        function setFabHidden(hidden) {
+            document.getElementById('fabCart').classList.toggle('fab-hidden', hidden);
+        }
+
+        /* ---------- Repetir último pedido ---------- */
+
+        function maybeShowRepeatBanner() {
+            const lastOrder = getLastOrder();
+            let dismissedThisSession = false;
+
+            try {
+                dismissedThisSession = sessionStorage.getItem('donramonHideRepeatBanner') === '1';
+            } catch {
+                dismissedThisSession = false;
+            }
+
+            if (lastOrder && order.length === 0 && !dismissedThisSession) {
+                document.getElementById('repeatBanner').style.display = 'flex';
+            }
+        }
+
+        function dismissRepeatBanner() {
+            document.getElementById('repeatBanner').style.display = 'none';
+
+            try {
+                sessionStorage.setItem('donramonHideRepeatBanner', '1');
+            } catch {
+                // si no se puede guardar, el aviso podría reaparecer en esta sesión; no es crítico
+            }
+        }
+
+        function repeatLastOrder() {
+            const lastOrder = getLastOrder();
+            if (!lastOrder) return;
+
+            let addedAny = false;
+
+            lastOrder.forEach(entry => {
+                const masterItem = items.find(candidate => candidate[0] === entry.name);
+
+                if (!masterItem || masterItem[5] === 'SIN STOCK') return;
+
+                order.push({
+                    name: entry.name,
+                    category: masterItem[1],
+                    variant: entry.variant,
+                    price: entry.price,
+                    quantity: entry.quantity,
+                    status: masterItem[5]
+                });
+
+                addedAny = true;
+            });
+
+            if (!addedAny) {
+                showToast('Ese pedido ya no está disponible en el menú actual');
+                dismissRepeatBanner();
+                return;
+            }
+
+            update();
+            syncCardControls();
+            dismissRepeatBanner();
+
+            document.getElementById('drawer').classList.add('open');
+            setFabHidden(true);
+
+            showToast('Pedido anterior cargado 🛒');
+        }
+
+        /* ---------- Nombre del cliente ---------- */
 
         function getCustomerName() {
             const input = document.getElementById('customerName');
@@ -1566,6 +1969,8 @@
             if (!customerName) {
                 return;
             }
+
+            saveLastOrder();
 
             const total = document.getElementById('total').textContent;
 
@@ -1616,6 +2021,8 @@
                 return;
             }
 
+            saveLastOrder();
+
             const numero = '5491156940434';
             const total = document.getElementById('total').textContent;
 
@@ -1630,6 +2037,8 @@
 
             window.open(url, '_blank', 'noopener');
         }
+
+        /* ---------- Filtros y categorías ---------- */
 
         function selectQuickFilter(filter, button) {
             quickFilter = filter;
@@ -1783,8 +2192,22 @@
                 `)
                 .join('');
 
-            document.getElementById('search').addEventListener('input', render);
+            document.getElementById('search').addEventListener('input', () => {
+                clearTimeout(searchDebounceTimer);
+                searchDebounceTimer = setTimeout(render, 220);
+            });
+
             document.getElementById('sort').addEventListener('change', render);
+
+            const savedName = (() => {
+                try {
+                    return localStorage.getItem(NAME_KEY) || '';
+                } catch {
+                    return '';
+                }
+            })();
+
+            document.getElementById('customerName').value = savedName;
 
             document.getElementById('customerName').addEventListener('input', function () {
                 const validation = document.getElementById('customerValidation');
@@ -1793,15 +2216,27 @@
                     validation.style.display = 'none';
                     this.removeAttribute('aria-invalid');
                 }
+
+                try {
+                    localStorage.setItem(NAME_KEY, this.value);
+                } catch {
+                    // no bloquea el ingreso si falla el guardado
+                }
             });
+
+            const availableCount = items.filter(item => item[5] === 'Disponible').length;
+            const availabilityPercent = Math.round((availableCount / items.length) * 100);
+
+            document.getElementById('availabilityBadge').textContent =
+                `🍽️ ${availabilityPercent}% del menú disponible hoy (${availableCount} de ${items.length} productos)`;
 
             render();
             update();
+            maybeShowRepeatBanner();
         }
 
         init();
     </script>
 </body>
-
 
 </html>
