@@ -4,18 +4,29 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Don Ramón Patisserie · Menú</title>
+    <meta name="theme-color" content="#7b3714">
+    <meta name="description" content="Menú digital de Don Ramón Pâtisserie. Pastelería artesanal y café al paso en San Miguel.">
+    <title>Don Ramón Pâtisserie · Menú</title>
 
     <style>
         :root {
             --brown: #7b3714;
+            --brown-dark: #5e260b;
             --cream: #fbf5ee;
+            --cream-dark: #f5dfc5;
             --gold: #d9a56f;
             --ink: #33261f;
+            --success: #39713d;
+            --warning: #9a651e;
+            --danger: #a33;
         }
 
         * {
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -25,8 +36,28 @@
             font: 16px Arial, sans-serif;
         }
 
+        button,
+        a,
+        input,
+        select {
+            transition:
+                background-color .2s ease,
+                color .2s ease,
+                border-color .2s ease,
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+            outline: 3px solid var(--gold);
+            outline-offset: 3px;
+        }
+
         header {
-            padding: 28px 6vw;
+            padding: 24px 6vw;
             background: linear-gradient(135deg, #f7ead8, #e8c79f);
             display: flex;
             justify-content: space-between;
@@ -34,10 +65,11 @@
             gap: 20px;
             position: sticky;
             top: 0;
-            z-index: 3;
+            z-index: 10;
+            box-shadow: 0 3px 14px #7b371414;
         }
 
-        header:before {
+        header::before {
             content: "";
             display: block;
             flex: 0 0 78px;
@@ -47,6 +79,11 @@
             box-shadow: 0 3px 10px #7b371425;
         }
 
+        .don-ramon {
+            flex: 1;
+            min-width: 0;
+        }
+
         h1 {
             margin: 0;
             color: var(--brown);
@@ -54,9 +91,38 @@
             letter-spacing: .04em;
         }
 
+        .titulo {
+            font-family: "Playfair Display", Georgia, serif;
+            font-weight: 700;
+            color: #8b5e3c;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
         header p {
             margin: 7px 0 0;
             color: #714326;
+        }
+
+        .shop-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 10px;
+            padding: 6px 10px;
+            border: 1px solid #d9bfa5;
+            border-radius: 999px;
+            background: #fffaf5;
+            color: #714326;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .shop-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--warning);
         }
 
         .cart {
@@ -69,6 +135,31 @@
             cursor: pointer;
         }
 
+        .cart:hover {
+            background: var(--brown-dark);
+            transform: translateY(-1px);
+        }
+
+        .cart.has-items {
+            background: var(--brown-dark);
+            box-shadow: 0 5px 16px #7b371450;
+        }
+
+        .cart-bump {
+            animation: cart-bump .35s ease;
+        }
+
+        @keyframes cart-bump {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.10);
+            }
+        }
+
         .wrap {
             max-width: 1200px;
             margin: auto;
@@ -77,14 +168,124 @@
 
         .tools {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
         }
 
         .tools input,
         .tools select {
-            max-width: 200px;
-            padding: 6px 10px;
+            max-width: 220px;
+            padding: 8px 10px;
+            border: 1px solid #d9bfa5;
+            border-radius: 9px;
+            background: white;
+            color: var(--ink);
             font-size: 14px;
+        }
+
+        .tools input {
+            flex: 1;
+            min-width: 190px;
+        }
+
+        .featured {
+            margin: 22px 0 10px;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            overflow: hidden;
+            border: 1px solid #d9bfa5;
+            border-radius: 20px;
+            background:
+                radial-gradient(circle at 92% 15%, #f4d4a6 0, transparent 35%),
+                linear-gradient(135deg, #fffaf4, #f5dfc5);
+            box-shadow: 0 8px 24px #7b371418;
+        }
+
+        .featured-content {
+            max-width: 650px;
+        }
+
+        .featured-label {
+            display: inline-block;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: white;
+            color: var(--brown);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        .featured h2 {
+            margin: 0;
+            color: var(--brown);
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(26px, 4vw, 38px);
+        }
+
+        .featured p {
+            max-width: 540px;
+            margin: 9px 0;
+            color: #5d4a3c;
+            line-height: 1.5;
+        }
+
+        .featured-price {
+            margin: 14px 0;
+            color: var(--brown);
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .featured-button {
+            padding: 10px 15px;
+            border: 0;
+            border-radius: 999px;
+            background: var(--brown);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .featured-button:hover {
+            background: var(--brown-dark);
+            transform: translateY(-1px);
+        }
+
+        .featured-icon {
+            min-width: 112px;
+            font-size: 64px;
+            text-align: center;
+        }
+
+        .quick-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 18px 0 8px;
+        }
+
+        .quick-filter {
+            padding: 8px 12px;
+            border: 1px solid #d9bfa5;
+            border-radius: 999px;
+            background: #fffaf5;
+            color: #714326;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .quick-filter:hover,
+        .quick-filter.active {
+            border-color: var(--brown);
+            background: var(--brown);
+            color: white;
         }
 
         .tabs {
@@ -125,7 +326,7 @@
         }
 
         .photo {
-            height: 150px;
+            height: 160px;
             background: linear-gradient(135deg, #b86b36, #f4d4a6);
             display: grid;
             place-items: center;
@@ -158,25 +359,57 @@
         }
 
         .desc {
-            line-height: 1.4;
-            color: #5d4a3c;
+            min-height: 44px;
             margin: 9px 0;
+            color: #5d4a3c;
+            line-height: 1.4;
         }
 
         .price {
-            font-weight: bold;
-            font-size: 20px;
             color: var(--brown);
+            font-size: 20px;
+            font-weight: bold;
         }
 
         .status {
-            font-size: 12px;
-            margin-top: 8px;
-            color: #866044;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            margin-top: 10px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: .04em;
+            text-transform: uppercase;
         }
 
-        .sold {
-            color: #a33;
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .status-disponible {
+            background: #e8f4e8;
+            color: var(--success);
+        }
+
+        .status-consultar {
+            background: #fff2dc;
+            color: var(--warning);
+        }
+
+        .status-pendiente {
+            background: #f8e8dc;
+            color: #935a2c;
+        }
+
+        .status-sin-stock {
+            background: #f8e3e3;
+            color: var(--danger);
         }
 
         .card button {
@@ -187,6 +420,11 @@
             background: var(--brown);
             color: white;
             cursor: pointer;
+            font-weight: bold;
+        }
+
+        .card button:hover:not(:disabled) {
+            background: var(--brown-dark);
         }
 
         .card button:disabled {
@@ -195,7 +433,10 @@
         }
 
         .empty {
+            grid-column: 1 / -1;
             padding: 30px;
+            border: 1px dashed #d9bfa5;
+            border-radius: 15px;
             text-align: center;
             color: #765;
         }
@@ -204,8 +445,8 @@
             position: fixed;
             right: 18px;
             bottom: 18px;
-            width: min(390px, calc(100% - 36px));
-            max-height: 80vh;
+            width: min(400px, calc(100% - 36px));
+            max-height: 82vh;
             overflow: auto;
             background: white;
             border: 1px solid #dfc7ad;
@@ -213,7 +454,7 @@
             box-shadow: 0 12px 40px #3b1c1233;
             padding: 18px;
             display: none;
-            z-index: 5;
+            z-index: 20;
         }
 
         .drawer.open {
@@ -227,52 +468,93 @@
 
         .row {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             border-bottom: 1px solid #eee;
-            padding: 8px 0;
+            padding: 10px 0;
         }
 
         .row-info {
             display: flex;
+            flex: 1;
             flex-direction: column;
             gap: 3px;
-            flex: 1;
+            min-width: 0;
+        }
+
+        .row-info strong {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .row-variant {
-            font-size: 13px;
             color: #765b47;
+            font-size: 13px;
+        }
+
+        .row-price {
+            color: var(--brown);
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px;
+            border: 1px solid #dfc7ad;
+            border-radius: 999px;
+        }
+
+        .quantity-controls button {
+            display: grid;
+            width: 25px;
+            height: 25px;
+            margin: 0;
+            padding: 0;
+            place-items: center;
+            border: 0;
+            border-radius: 50%;
+            background: #f7ead8;
+            color: var(--brown);
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .quantity-controls button:hover {
+            background: var(--gold);
+            color: var(--brown-dark);
+        }
+
+        .quantity-value {
+            min-width: 18px;
+            text-align: center;
+            color: var(--brown);
+            font-size: 13px;
+            font-weight: bold;
         }
 
         .close {
             float: right;
             border: 0;
             background: transparent;
-            font-size: 22px;
+            color: var(--ink);
+            font-size: 24px;
             cursor: pointer;
         }
 
-        .note {
-            margin-top: 26px;
-            font-size: 13px;
-            color: #765b47;
-        }
-
-        footer {
-            padding: 30px 6vw;
-            text-align: center;
-            color: #765b47;
-        }
-
         .remove {
-            border: 1px solid #c99b78 !important;
-            background: white !important;
-            color: #7b3714 !important;
             margin: 0 !important;
-            padding: 4px 8px !important;
-            font-size: 12px;
+            padding: 4px 7px !important;
+            border: 1px solid #c99b78 !important;
+            border-radius: 7px !important;
+            background: white !important;
+            color: var(--brown) !important;
+            font-size: 11px !important;
         }
 
         .variant-box {
@@ -284,9 +566,9 @@
         }
 
         .variant-title {
-            font-weight: bold;
-            color: var(--brown);
             margin-bottom: 9px;
+            color: var(--brown);
+            font-weight: bold;
         }
 
         .variant-options {
@@ -300,9 +582,9 @@
             align-items: center;
             gap: 8px;
             padding: 8px;
+            border: 1px solid #ead8c5;
             border-radius: 8px;
             background: white;
-            border: 1px solid #ead8c5;
             cursor: pointer;
         }
 
@@ -311,8 +593,8 @@
         }
 
         .variant-option input {
-            padding: 0;
             margin: 0;
+            padding: 0;
         }
 
         .add-selected {
@@ -323,16 +605,16 @@
         .cancel-selected {
             width: 100%;
             margin: 7px 0 0 !important;
+            border: 1px solid var(--brown) !important;
             background: white !important;
             color: var(--brown) !important;
-            border: 1px solid var(--brown) !important;
         }
 
         .validation {
-            font-size: 12px;
-            color: #a33;
-            margin-top: 7px;
             display: none;
+            margin-top: 7px;
+            color: var(--danger);
+            font-size: 12px;
         }
 
         .customer-field {
@@ -352,22 +634,30 @@
             padding: 10px 11px;
             border: 1px solid #dfc7ad;
             border-radius: 9px;
-            background: #fff;
+            background: white;
             color: var(--ink);
             font: inherit;
-        }
-
-        .customer-field input:focus {
-            outline: none;
-            border-color: var(--brown);
-            box-shadow: 0 0 0 3px #7b371420;
         }
 
         .customer-validation {
             display: none;
             margin-top: 6px;
-            color: #a33;
+            color: var(--danger);
             font-size: 12px;
+        }
+
+        .cart-total {
+            padding-top: 10px;
+            border-top: 1px solid #ead8c5;
+            color: var(--brown);
+            font-size: 19px;
+        }
+
+        .cart-note {
+            margin: 9px 0 0;
+            color: #765b47;
+            font-size: 12px;
+            line-height: 1.4;
         }
 
         .footer-info {
@@ -409,15 +699,14 @@
         }
 
         .footer-links a {
-            color: var(--brown);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 11px;
             padding: 6px 10px;
             border: 1px solid #d9bfa5;
             border-radius: 999px;
-            background: #fff;
-            transition: .2s;
+            background: white;
+            color: var(--brown);
+            font-size: 11px;
+            font-weight: bold;
+            text-decoration: none;
         }
 
         .footer-links a:hover {
@@ -429,32 +718,69 @@
             margin-top: 15px;
             padding-top: 13px;
             border-top: 1px solid #ead8c5;
+            color: #8a715f;
             font-size: 10px;
             line-height: 1.5;
-            color: #8a715f;
         }
 
-        .titulo {
-            font-family: "Playfair Display", Georgia, serif;
-            font-weight: 700;
-            color: #8B5E3C;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        @media (hover: hover) {
+            .card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 26px #7b371424;
+            }
         }
 
-        @media (max-width: 520px) {
-            header:before {
-                width: 56px;
-                height: 56px;
-                flex-basis: 56px;
+        @media (max-width: 620px) {
+            header {
+                padding: 16px 5vw;
+                gap: 12px;
             }
 
-            header {
-                padding: 18px 5vw;
+            header::before {
+                flex-basis: 54px;
+                width: 54px;
+                height: 54px;
             }
 
             h1 {
-                font-size: 28px;
+                font-size: 23px;
+                letter-spacing: 1px;
+            }
+
+            header p {
+                font-size: 12px;
+            }
+
+            .shop-status {
+                font-size: 10px;
+            }
+
+            .cart {
+                padding: 10px 13px;
+                font-size: 12px;
+            }
+
+            .featured {
+                padding: 18px;
+            }
+
+            .featured-icon {
+                min-width: auto;
+                font-size: 42px;
+            }
+
+            .featured p {
+                font-size: 14px;
+            }
+
+            .tools input,
+            .tools select {
+                max-width: none;
+                width: 100%;
+            }
+
+            .tools select {
+                flex: 1;
             }
 
             .footer-info {
@@ -489,6 +815,21 @@
                 font-size: 9px;
             }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+            }
+        }
     </style>
 </head>
 
@@ -496,27 +837,72 @@
     <header>
         <div class="don-ramon">
             <h1 class="titulo">DON RAMÓN PÂTISSERIE</h1>
-            <p>Pastelería artesanal y café al paso | Hecho con amor</p>
+            <p>Pastelería artesanal y café al paso · Hecho con amor</p>
+
+            <div class="shop-status">
+                <span class="shop-status-dot"></span>
+                <span>Horarios: mar. a sáb. 7–13 y 16–19 · dom. 8–13</span>
+            </div>
         </div>
 
-        <button class="cart" onclick="toggleCart()">
+        <button class="cart" id="cartButton" onclick="toggleCart()" aria-label="Ver pedido">
             Pedido <span id="count">0</span>
         </button>
     </header>
 
     <div class="wrap">
         <div class="tools">
-            <input id="search" placeholder="Buscar producto…">
+            <input id="search" type="search" placeholder="Buscar producto…" aria-label="Buscar producto">
 
-            <select id="sort">
-                <option value="default">Orden</option>
-                <option value="price">Precio menor a mayor</option>
+            <select id="sort" aria-label="Ordenar productos">
+                <option value="default">Ordenar por</option>
+                <option value="price">Precio: menor a mayor</option>
             </select>
         </div>
 
-        <nav class="tabs" id="tabs"></nav>
+        <section class="featured" aria-label="Producto recomendado">
+            <div class="featured-content">
+                <span class="featured-label">✨ Recomendado de hoy</span>
+                <h2>Una pausa rica</h2>
+                <p>
+                    Elegí tu café favorito y acompañalo con una cookie artesanal
+                    o con alguno de nuestros laminados recién hechos.
+                </p>
+                <div class="featured-price">Cafés desde $3.300</div>
 
-        <section class="grid" id="grid"></section>
+                <button class="featured-button" onclick="goToCategory('Café')">
+                    Ver cafés
+                </button>
+            </div>
+
+            <div class="featured-icon" aria-hidden="true">☕🍪</div>
+        </section>
+
+        <div class="quick-filters" aria-label="Filtros rápidos">
+            <button class="quick-filter active" data-filter="all" onclick="selectQuickFilter('all', this)">
+                Todo el menú
+            </button>
+
+            <button class="quick-filter" data-filter="available" onclick="selectQuickFilter('available', this)">
+                Disponible hoy
+            </button>
+
+            <button class="quick-filter" data-filter="coffee" onclick="selectQuickFilter('coffee', this)">
+                Cafés
+            </button>
+
+            <button class="quick-filter" data-filter="sweet" onclick="selectQuickFilter('sweet', this)">
+                Algo dulce
+            </button>
+
+            <button class="quick-filter" data-filter="salty" onclick="selectQuickFilter('salty', this)">
+                Salados
+            </button>
+        </div>
+
+        <nav class="tabs" id="tabs" aria-label="Categorías de productos"></nav>
+
+        <section class="grid" id="grid" aria-live="polite"></section>
 
         <section class="footer-info">
             <div class="footer-location">
@@ -555,9 +941,9 @@
         </section>
     </div>
 
-    <footer>Don Ramón Patisserie · Menú digital</footer>
+    <footer>Don Ramón Pâtisserie · Menú digital</footer>
 
-    <aside class="drawer" id="drawer">
+    <aside class="drawer" id="drawer" aria-label="Tu pedido">
         <button class="close" onclick="toggleCart()" aria-label="Cerrar pedido">×</button>
 
         <h2>Tu pedido</h2>
@@ -581,7 +967,13 @@
             </div>
         </div>
 
-        <p><strong>Total: $<span id="total">0</span></strong></p>
+        <p class="cart-total">
+            <strong>Total: $<span id="total">0</span></strong>
+        </p>
+
+        <p class="cart-note">
+            Los productos marcados como “Consultar” se confirmarán según disponibilidad del día.
+        </p>
 
         <button class="cart" onclick="sendWhatsApp()">
             Enviar por WhatsApp
@@ -605,8 +997,10 @@
             ['Cappuccino', 'Café', 'Chico / Mediano / Grande', '4600 / 5400 / 6200', 'Espresso, leche vaporizada y espuma cremosa.', 'Disponible', '☕'],
             ['Cortado Flat White', 'Café', 'Chico / Mediano / Grande', '4800 / 5200 / 5600', 'Espresso con leche y espuma fina.', 'Disponible', '☕'],
             ['Americano', 'Café', 'Chico / Mediano', '4000 / 5400', 'Espresso suavizado con agua caliente.', 'Disponible', '☕'],
+
             ['Submarino', 'Infusiones', 'Único', '5200', 'Leche caliente con chocolate para fundir.', 'Disponible', '🍫'],
             ['Té', 'Infusiones', 'Único', '5200', 'Infusión caliente. Variedad a confirmar.', 'PENDIENTE', '🍵'],
+
             ['Medialuna', 'Pastelería y laminados', 'Único', '2000', 'Laminado artesanal de textura tierna.', 'PENDIENTE', '🥐'],
             ['Croissant', 'Pastelería y laminados', 'Único', '3200', 'Laminado dorado y hojaldrado.', 'Consultar', '🥐'],
             ['Cookies', 'Pastelería y laminados', 'Único', '4200', 'Dulce de leche, chips o Rocklets.', 'Disponible', '🍪'],
@@ -619,73 +1013,130 @@
             ['Brownie', 'Pastelería y laminados', 'Con nuez / Sin nuez', '4800', 'Brownie húmedo e intenso de chocolate.', 'Disponible', '🍫'],
             ['Limoncitos', 'Pastelería y laminados', 'Único', '3800', 'Bocado dulce con perfil fresco de limón.', 'Disponible', '🍋'],
             ['Pan de chocolate', 'Pastelería y laminados', 'Único', '4200', 'Laminado con chocolate.', 'Disponible', '🥐'],
+
             ['Medialuna JYQ XL', 'Salados', 'XL', '0', 'Medialuna XL de jamón y queso.', 'SIN STOCK', '🥪'],
             ['Croissant JYQ', 'Salados', 'Único', '6000', 'Croissant relleno de jamón y queso.', 'Disponible', '🥪'],
             ['Ciabatta multicereal', 'Salados', 'Único', '0', 'Ciabatta con jamón y queso.', 'SIN STOCK', '🥪'],
             ['Súper tostado de campo', 'Salados', 'Único', '10000', 'Tostado de campo con jamón y queso.', 'Disponible', '🥪'],
             ['Scon de queso', 'Salados', '1/4 unidad / Unidad', '3000 / 6000', 'Scon artesanal de queso.', 'Disponible', '🧀'],
+
             ['Salsas', 'Adicionales', 'Vainilla / Caramelo / Chocolate / Pistacho', '800', 'Salsa para personalizar la bebida.', 'Disponible', '🍯'],
             ['Leche deslactosada', 'Adicionales', 'Adicional', '1000', 'Alternativa de leche.', 'Disponible', '🥛'],
             ['Leche de almendras', 'Adicionales', 'Adicional', '1000', 'Alternativa vegetal.', 'Disponible', '🥛']
         ];
 
         let cat = 'Todas';
+        let quickFilter = 'all';
         let order = [];
 
-        const money = n => new Intl.NumberFormat('es-AR').format(n);
+        const money = value => new Intl.NumberFormat('es-AR').format(value);
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
 
         function getVariants(item) {
-            const variants = item[2].split(' / ').map(v => v.trim());
-            const prices = item[3].split(' / ').map(v => Number(v.trim()));
+            const variants = item[2].split(' / ').map(value => value.trim());
+            const prices = item[3].split(' / ').map(value => Number(value.trim()));
 
             return variants.length > 1
-                ? variants.map((name, i) => ({
+                ? variants.map((name, index) => ({
                     name,
-                    price: prices[i] ?? prices[0]
+                    price: prices[index] ?? prices[0]
                 }))
                 : [];
         }
 
-        function render() {
-            const q = document.getElementById('search').value.toLowerCase();
-
-            let filteredItems = items.filter(item =>
-                (cat === 'Todas' || item[1] === cat) &&
-                item[0].toLowerCase().includes(q)
+        function getMinPrice(item) {
+            return Math.min(
+                ...item[3]
+                    .split(' / ')
+                    .map(value => Number(value.trim()))
             );
+        }
+
+        function getStatusClass(status) {
+            return 'status-' + status
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/\s+/g, '-');
+        }
+
+        function matchesQuickFilter(item) {
+            const category = item[1];
+            const status = item[5];
+
+            if (quickFilter === 'available') {
+                return status === 'Disponible';
+            }
+
+            if (quickFilter === 'coffee') {
+                return category === 'Café';
+            }
+
+            if (quickFilter === 'sweet') {
+                return category === 'Pastelería y laminados' || category === 'Infusiones';
+            }
+
+            if (quickFilter === 'salty') {
+                return category === 'Salados';
+            }
+
+            return true;
+        }
+
+        function render() {
+            const query = document.getElementById('search').value.trim().toLowerCase();
+
+            let filteredItems = items.filter(item => {
+                const belongsToCategory = cat === 'Todas' || item[1] === cat;
+                const matchesSearch = item[0].toLowerCase().includes(query);
+
+                return belongsToCategory && matchesSearch && matchesQuickFilter(item);
+            });
 
             if (document.getElementById('sort').value === 'price') {
-                filteredItems.sort((a, b) => parseInt(a[3]) - parseInt(b[3]));
+                filteredItems = [...filteredItems].sort(
+                    (a, b) => getMinPrice(a) - getMinPrice(b)
+                );
             }
 
             document.getElementById('grid').innerHTML =
                 filteredItems.map(item => {
-                    const idx = items.indexOf(item);
-                    const sinStock = item[5] === 'SIN STOCK';
+                    const index = items.indexOf(item);
+                    const isOutOfStock = item[5] === 'SIN STOCK';
                     const variants = getVariants(item);
 
                     const priceText = item[3].includes('/')
                         ? '$' + item[3]
                             .split(' / ')
-                            .map(price => money(Number(price)))
+                            .map(price => money(Number(price.trim())))
                             .join(' / $')
                         : '$' + money(Number(item[3]));
 
                     return `
-                        <article class="card" id="card-${idx}">
+                        <article class="card" id="card-${index}">
                             <div class="photo">${item[6]}</div>
 
                             <main>
-                                <div class="tag">${item[1]} · ${item[2]}</div>
-                                <h3>${item[0]}</h3>
-                                <p class="desc">${item[4]}</p>
+                                <div class="tag">${escapeHtml(item[1])} · ${escapeHtml(item[2])}</div>
+                                <h3>${escapeHtml(item[0])}</h3>
+                                <p class="desc">${escapeHtml(item[4])}</p>
                                 <div class="price">${priceText}</div>
-                                <div class="status ${sinStock ? 'sold' : ''}">
-                                    ${item[5]}
+
+                                <div class="status ${getStatusClass(item[5])}">
+                                    <span class="status-dot"></span>
+                                    ${escapeHtml(item[5])}
                                 </div>
 
-                                ${variants.length > 0 && !sinStock ? `
-                                    <div class="variant-box" id="variant-box-${idx}" style="display:none">
+                                ${variants.length > 0 && !isOutOfStock ? `
+                                    <div class="variant-box" id="variant-box-${index}" style="display:none">
                                         <div class="variant-title">Elegí una opción:</div>
 
                                         <div class="variant-options">
@@ -693,30 +1144,30 @@
                                                 <label class="variant-option">
                                                     <input
                                                         type="radio"
-                                                        name="variant-${idx}"
+                                                        name="variant-${index}"
                                                         value="${variantIndex}"
                                                     >
                                                     <span>
-                                                        ${variant.name} — $${money(variant.price)}
+                                                        ${escapeHtml(variant.name)} — $${money(variant.price)}
                                                     </span>
                                                 </label>
                                             `).join('')}
                                         </div>
 
-                                        <div class="validation" id="validation-${idx}">
+                                        <div class="validation" id="validation-${index}">
                                             Tenés que elegir una opción para agregar el producto.
                                         </div>
 
                                         <button
                                             class="add-selected"
-                                            onclick="confirmVariant(${idx})"
+                                            onclick="confirmVariant(${index})"
                                         >
                                             Agregar al pedido
                                         </button>
 
                                         <button
                                             class="cancel-selected"
-                                            onclick="cancelVariant(${idx})"
+                                            onclick="cancelVariant(${index})"
                                         >
                                             Cancelar
                                         </button>
@@ -725,11 +1176,11 @@
                             </main>
 
                             <button
-                                ${sinStock ? 'disabled' : ''}
-                                id="add-btn-${idx}"
-                                onclick="startAdd(${idx})"
+                                ${isOutOfStock ? 'disabled' : ''}
+                                id="add-btn-${index}"
+                                onclick="startAdd(${index})"
                             >
-                                ${sinStock
+                                ${isOutOfStock
                                     ? 'Sin stock'
                                     : variants.length > 0
                                         ? 'Elegir opción'
@@ -744,20 +1195,27 @@
             applyPhotos();
         }
 
-        function startAdd(i) {
-            const variants = getVariants(items[i]);
+        function startAdd(index) {
+            const item = items[index];
+            const variants = getVariants(item);
+
+            if (item[5] === 'Consultar') {
+                alert(
+                    `"${item[0]}" se agrega como pedido sujeto a confirmación de disponibilidad.`
+                );
+            }
 
             if (variants.length === 0) {
-                addItem(items[i], null, Number(items[i][3]));
+                addItem(item, null, Number(item[3]));
                 return;
             }
 
-            const box = document.getElementById('variant-box-' + i);
-            const btn = document.getElementById('add-btn-' + i);
+            const box = document.getElementById('variant-box-' + index);
+            const button = document.getElementById('add-btn-' + index);
 
-            if (box) {
+            if (box && button) {
                 box.style.display = 'block';
-                btn.style.display = 'none';
+                button.style.display = 'none';
 
                 box.scrollIntoView({
                     behavior: 'smooth',
@@ -766,32 +1224,40 @@
             }
         }
 
-        function confirmVariant(i) {
+        function confirmVariant(index) {
             const selected = document.querySelector(
-                `input[name="variant-${i}"]:checked`
+                `input[name="variant-${index}"]:checked`
             );
 
-            const validation = document.getElementById('validation-' + i);
+            const validation = document.getElementById('validation-' + index);
 
             if (!selected) {
                 validation.style.display = 'block';
                 return;
             }
 
-            const variantIndex = Number(selected.value);
-            const variant = getVariants(items[i])[variantIndex];
+            const item = items[index];
 
-            addItem(items[i], variant.name, variant.price);
-            cancelVariant(i);
+            if (item[5] === 'Consultar') {
+                alert(
+                    `"${item[0]}" se agrega como pedido sujeto a confirmación de disponibilidad.`
+                );
+            }
+
+            const variantIndex = Number(selected.value);
+            const variant = getVariants(item)[variantIndex];
+
+            addItem(item, variant.name, variant.price);
+            cancelVariant(index);
         }
 
-        function cancelVariant(i) {
-            const box = document.getElementById('variant-box-' + i);
-            const btn = document.getElementById('add-btn-' + i);
+        function cancelVariant(index) {
+            const box = document.getElementById('variant-box-' + index);
+            const button = document.getElementById('add-btn-' + index);
             const selected = document.querySelector(
-                `input[name="variant-${i}"]:checked`
+                `input[name="variant-${index}"]:checked`
             );
-            const validation = document.getElementById('validation-' + i);
+            const validation = document.getElementById('validation-' + index);
 
             if (selected) {
                 selected.checked = false;
@@ -805,44 +1271,99 @@
                 box.style.display = 'none';
             }
 
-            if (btn) {
-                btn.style.display = 'block';
+            if (button) {
+                button.style.display = 'block';
             }
         }
 
         function addItem(item, variant, price) {
-            order.push({
-                name: item[0],
-                category: item[1],
-                variant: variant,
-                price: Number(price)
-            });
+            const existingItem = order.find(orderItem =>
+                orderItem.name === item[0] &&
+                orderItem.variant === variant
+            );
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                order.push({
+                    name: item[0],
+                    category: item[1],
+                    variant,
+                    price: Number(price),
+                    quantity: 1,
+                    status: item[5]
+                });
+            }
 
             update();
+
+            const cartButton = document.getElementById('cartButton');
+
+            cartButton.classList.add('has-items', 'cart-bump');
+
+            setTimeout(() => {
+                cartButton.classList.remove('cart-bump');
+            }, 350);
 
             document.getElementById('drawer').classList.add('open');
         }
 
         function update() {
-            document.getElementById('count').textContent = order.length;
+            const totalProducts = order.reduce(
+                (total, item) => total + item.quantity,
+                0
+            );
+
+            document.getElementById('count').textContent = totalProducts;
+
+            document
+                .getElementById('cartButton')
+                .classList.toggle('has-items', totalProducts > 0);
 
             document.getElementById('items').innerHTML =
                 order.map((item, index) => `
                     <div class="row">
                         <div class="row-info">
-                            <strong>${item.name}</strong>
+                            <strong>${escapeHtml(item.name)}</strong>
 
                             ${item.variant
-                                ? `<span class="row-variant">${item.variant}</span>`
+                                ? `<span class="row-variant">${escapeHtml(item.variant)}</span>`
+                                : ''
+                            }
+
+                            ${item.status === 'Consultar'
+                                ? '<span class="row-variant">Disponibilidad a confirmar</span>'
                                 : ''
                             }
                         </div>
 
-                        <b>$${money(item.price)}</b>
+                        <div class="quantity-controls" aria-label="Cantidad de ${escapeHtml(item.name)}">
+                            <button
+                                type="button"
+                                onclick="decreaseQuantity(${index})"
+                                aria-label="Quitar una unidad de ${escapeHtml(item.name)}"
+                            >
+                                −
+                            </button>
+
+                            <span class="quantity-value">${item.quantity}</span>
+
+                            <button
+                                type="button"
+                                onclick="increaseQuantity(${index})"
+                                aria-label="Agregar una unidad de ${escapeHtml(item.name)}"
+                            >
+                                +
+                            </button>
+                        </div>
+
+                        <b class="row-price">$${money(item.price * item.quantity)}</b>
 
                         <button
                             class="remove"
+                            type="button"
                             onclick="removeItem(${index})"
+                            aria-label="Eliminar ${escapeHtml(item.name)} del pedido"
                         >
                             Quitar
                         </button>
@@ -851,15 +1372,30 @@
                 || '<p>Tu pedido está vacío.</p>';
 
             const total = order.reduce(
-                (sum, item) => sum + item.price,
+                (sum, item) => sum + (item.price * item.quantity),
                 0
             );
 
             document.getElementById('total').textContent = money(total);
         }
 
-        function removeItem(i) {
-            order.splice(i, 1);
+        function increaseQuantity(index) {
+            order[index].quantity += 1;
+            update();
+        }
+
+        function decreaseQuantity(index) {
+            if (order[index].quantity > 1) {
+                order[index].quantity -= 1;
+            } else {
+                order.splice(index, 1);
+            }
+
+            update();
+        }
+
+        function removeItem(index) {
+            order.splice(index, 1);
             update();
         }
 
@@ -883,6 +1419,19 @@
             return customerName;
         }
 
+        function getOrderSummary() {
+            return order.map(item => {
+                const variantText = item.variant ? ` - ${item.variant}` : '';
+                const quantityText = item.quantity > 1 ? ` x${item.quantity}` : '';
+                const itemTotal = money(item.price * item.quantity);
+                const confirmText = item.status === 'Consultar'
+                    ? ' (a confirmar)'
+                    : '';
+
+                return `• ${item.name}${variantText}${quantityText}${confirmText} — $${itemTotal}`;
+            }).join('\n');
+        }
+
         function copyOrder() {
             if (order.length === 0) {
                 alert('Tu pedido está vacío.');
@@ -895,27 +1444,41 @@
                 return;
             }
 
-            const resumen = order
-                .map(item =>
-                    `• ${item.name}${item.variant ? ' - ' + item.variant : ''} — $${money(item.price)}`
-                )
-                .join('\n');
-
             const total = document.getElementById('total').textContent;
 
-            const texto =
-                `Pedido Don Ramón Patisserie\n\n` +
+            const text =
+                `Pedido Don Ramón Pâtisserie\n\n` +
                 `Nombre del solicitante: ${customerName}\n\n` +
-                `Pedido:\n${resumen}\n\n` +
+                `Pedido:\n${getOrderSummary()}\n\n` +
                 `Total: $${total}`;
 
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(texto)
+                navigator.clipboard.writeText(text)
                     .then(() => alert('Resumen copiado.'))
-                    .catch(() => alert('No fue posible copiar el resumen.'));
+                    .catch(() => fallbackCopy(text));
             } else {
-                alert('Tu navegador no permite copiar automáticamente el resumen.');
+                fallbackCopy(text);
             }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                document.execCommand('copy');
+                alert('Resumen copiado.');
+            } catch {
+                alert('No fue posible copiar el resumen.');
+            }
+
+            document.body.removeChild(textarea);
         }
 
         function sendWhatsApp() {
@@ -931,24 +1494,65 @@
             }
 
             const numero = '5491156940434';
-
-            const lineas = order
-                .map(item =>
-                    `• ${item.name}${item.variant ? ' - ' + item.variant : ''} — $${money(item.price)}`
-                )
-                .join('\n');
-
             const total = document.getElementById('total').textContent;
 
-            const mensaje =
-                `Hola! Quiero hacer este pedido en Don Ramón Patisserie:\n\n` +
+            const message =
+                `Hola! Quiero hacer este pedido en Don Ramón Pâtisserie:\n\n` +
                 `Nombre del solicitante: ${customerName}\n\n` +
-                `Pedido:\n${lineas}\n\n` +
-                `Total: $${total}`;
+                `Pedido:\n${getOrderSummary()}\n\n` +
+                `Total: $${total}\n\n` +
+                `Los productos marcados como "a confirmar" quedan sujetos a disponibilidad.`;
 
-            const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+            const url = `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
 
-            window.open(url, '_blank');
+            window.open(url, '_blank', 'noopener');
+        }
+
+        function selectQuickFilter(filter, button) {
+            quickFilter = filter;
+
+            document.querySelectorAll('.quick-filter').forEach(filterButton => {
+                filterButton.classList.remove('active');
+            });
+
+            button.classList.add('active');
+
+            if (filter === 'coffee') {
+                cat = 'Café';
+                updateCategoryTabs();
+            }
+
+            if (filter === 'salty') {
+                cat = 'Salados';
+                updateCategoryTabs();
+            }
+
+            if (filter === 'all' || filter === 'available' || filter === 'sweet') {
+                cat = 'Todas';
+                updateCategoryTabs();
+            }
+
+            render();
+        }
+
+        function goToCategory(category) {
+            cat = category;
+            quickFilter = 'coffee';
+
+            document.querySelectorAll('.quick-filter').forEach(button => {
+                button.classList.toggle(
+                    'active',
+                    button.dataset.filter === 'coffee'
+                );
+            });
+
+            updateCategoryTabs();
+            render();
+
+            document.getElementById('tabs').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         }
 
         const photoMap = {
@@ -966,7 +1570,10 @@
             'Cookies premium': 'foto-cookies.jpeg',
             'Minicake individual': 'foto-torta.jpeg',
             'Minicake 10 cm': 'foto-tarta-limon.jpeg',
-            'Limoncitos': 'foto-tarta-limon.jpeg'
+            'Limoncitos': 'foto-tarta-limon.jpeg',
+            'Brownie': 'foto-brownie.jpeg',
+            'Croissant JYQ': 'foto-croissant-jyq.jpeg',
+            'Súper tostado de campo': 'foto-tostado.jpeg'
         };
 
         function applyPhotos() {
@@ -974,58 +1581,79 @@
                 const name = card.querySelector('h3')?.textContent.trim();
                 const file = photoMap[name];
 
-                if (file) {
-                    const photo = card.querySelector('.photo');
-
-                    photo.innerHTML = `
-                        <img
-                            src="02-banco-visual/${file}"
-                            alt="${name}"
-                            loading="lazy"
-                        >
-                    `;
+                if (!file) {
+                    return;
                 }
-            });
-        }
 
-        function init() {
-            const cats = ['Todas', ...new Set(items.map(item => item[1]))];
+                const photo = card.querySelector('.photo');
 
-            document.getElementById('tabs').innerHTML = cats
-                .map(category => `
-                    <button
-                        class="tab ${category === 'Todas' ? 'active' : ''}"
-                        onclick="selectCategory('${category.replace(/'/g, "\\'")}', this)"
+                photo.innerHTML = `
+                    <img
+                        src="02-banco-visual/${file}"
+                        alt="${escapeHtml(name)}"
+                        loading="lazy"
+                        onerror="this.remove();"
                     >
-                        ${category}
-                    </button>
-                `)
-                .join('');
-
-            render();
-            update();
+                `;
+            });
         }
 
         function selectCategory(category, button) {
             cat = category;
+            quickFilter = 'all';
 
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
+            document.querySelectorAll('.quick-filter').forEach(filterButton => {
+                filterButton.classList.toggle(
+                    'active',
+                    filterButton.dataset.filter === 'all'
+                );
             });
 
-            button.classList.add('active');
+            updateCategoryTabs();
+
+            if (button) {
+                button.classList.add('active');
+            }
 
             render();
         }
 
-        document.getElementById('search').oninput = render;
-        document.getElementById('sort').onchange = render;
+        function updateCategoryTabs() {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.toggle(
+                    'active',
+                    tab.dataset.category === cat
+                );
+            });
+        }
 
-        document.getElementById('customerName').addEventListener('input', function () {
-            if (this.value.trim()) {
-                document.getElementById('customerValidation').style.display = 'none';
-            }
-        });
+        function init() {
+            const categories = ['Todas', ...new Set(items.map(item => item[1]))];
+
+            document.getElementById('tabs').innerHTML = categories
+                .map(category => `
+                    <button
+                        class="tab ${category === 'Todas' ? 'active' : ''}"
+                        data-category="${escapeHtml(category)}"
+                        onclick="selectCategory('${category.replace(/'/g, "\\'")}', this)"
+                    >
+                        ${escapeHtml(category)}
+                    </button>
+                `)
+                .join('');
+
+            document.getElementById('search').addEventListener('input', render);
+            document.getElementById('sort').addEventListener('change', render);
+
+            document.getElementById('customerName').addEventListener('input', function () {
+                if (this.value.trim()) {
+                    document.getElementById('customerValidation').style.display = 'none';
+                }
+            });
+
+            render();
+            update();
+        }
 
         init();
     </script>
