@@ -942,12 +942,12 @@
             </div>
 
             <div class="featured-grid">
-                <!-- Combo Cookie + Café -->
+                <!-- Cookie + café -->
                 <article class="featured">
                     <div class="featured-content">
-                        <span class="featured-label">Cookie + café</span>
+                        <span class="featured-label">Café + cookie</span>
 
-                        <h3>Combo merienda</h3>
+                        <h3>Combo 1</h3>
 
                         <p>
                             Elegí un café y acompañalo con una cookie artesanal
@@ -957,11 +957,19 @@
                         <div class="featured-price">Desde $7.500</div>
 
                         <div class="featured-actions">
-                            <button type="button" class="featured-button" onclick="goToCategory('Café')">
+                            <button
+                                type="button"
+                                class="featured-button"
+                                onclick="goToCategory('Café')"
+                            >
                                 Elegir café
                             </button>
 
-                            <button type="button" class="featured-button secondary" onclick="searchProduct('Cookies')">
+                            <button
+                                type="button"
+                                class="featured-button secondary"
+                                onclick="searchProduct('Cookies')"
+                            >
                                 Elegir cookie
                             </button>
                         </div>
@@ -970,26 +978,34 @@
                     <div class="featured-icon" aria-hidden="true">☕🍪</div>
                 </article>
 
-                <!-- Combo Café + Budín -->
+                <!-- Café + budín -->
                 <article class="featured featured-budin">
                     <div class="featured-content">
                         <span class="featured-label">Café + budín</span>
 
-                        <h3>Merienda casera</h3>
+                        <h3>Combo 2</h3>
 
                         <p>
                             Disfrutá un café a elección junto con una porción
                             de budín artesanal del día.
                         </p>
 
-                        <div class="featured-price">Desde $6.600</div>
+                        <div class="featured-price">Desde $7.600</div>
 
                         <div class="featured-actions">
-                            <button type="button" class="featured-button" onclick="goToCategory('Café')">
+                            <button
+                                type="button"
+                                class="featured-button"
+                                onclick="goToCategory('Café')"
+                            >
                                 Elegir café
                             </button>
 
-                            <button type="button" class="featured-button secondary" onclick="searchProduct('budín')">
+                            <button
+                                type="button"
+                                class="featured-button secondary"
+                                onclick="searchProduct('budín')"
+                            >
                                 Ver budín
                             </button>
                         </div>
@@ -1625,9 +1641,11 @@
             render();
         }
 
-        function goToCategory(category) {
+       function goToCategory(category) {
             cat = category;
             quickFilter = 'all';
+
+            document.getElementById('search').value = '';
 
             document.querySelectorAll('.quick-filter').forEach(button => {
                 button.classList.toggle(
@@ -1639,7 +1657,29 @@
             updateCategoryTabs();
             render();
 
-            document.getElementById('tabs').scrollIntoView({
+            document.getElementById('grid').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function searchProduct(term) {
+            cat = 'Todas';
+            quickFilter = 'all';
+
+            document.getElementById('search').value = term;
+
+            document.querySelectorAll('.quick-filter').forEach(button => {
+                button.classList.toggle(
+                    'active',
+                    button.dataset.filter === 'all'
+                );
+            });
+
+            updateCategoryTabs();
+            render();
+
+            document.getElementById('grid').scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
