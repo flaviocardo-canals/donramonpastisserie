@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#7b3714">
-    <meta name="description" content="Menú digital de Don Ramón Pâtisserie. Pastelería artesanal y café al paso en San Miguel.">
+    <meta name="description"
+        content="Menú digital de Don Ramón Pâtisserie. Pastelería artesanal y café al paso en San Miguel.">
     <title>Don Ramón Pâtisserie · Menú</title>
 
     <style>
@@ -57,15 +58,15 @@
         }
 
         header {
-            padding: 24px 6vw;
-            background: linear-gradient(135deg, #f7ead8, #e8c79f);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
             position: sticky;
             top: 0;
             z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 24px 6vw;
+            background: linear-gradient(135deg, #f7ead8, #e8c79f);
             box-shadow: 0 3px 14px #7b371414;
         }
 
@@ -74,8 +75,8 @@
             display: block;
             flex: 0 0 78px;
             height: 78px;
-            background: url("02-banco-visual/logo-don-ramon-patisserie.jpg") center/cover no-repeat;
             border-radius: 50%;
+            background: url("02-banco-visual/logo-don-ramon-patisserie.jpg") center/cover no-repeat;
             box-shadow: 0 3px 10px #7b371425;
         }
 
@@ -92,9 +93,9 @@
         }
 
         .titulo {
+            color: #8b5e3c;
             font-family: "Playfair Display", Georgia, serif;
             font-weight: 700;
-            color: #8b5e3c;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
@@ -126,13 +127,13 @@
         }
 
         .cart {
-            background: var(--brown);
-            color: white;
+            padding: 12px 18px;
             border: 0;
             border-radius: 999px;
-            padding: 12px 18px;
-            font-weight: bold;
+            background: var(--brown);
+            color: white;
             cursor: pointer;
+            font-weight: bold;
         }
 
         .cart:hover {
@@ -150,6 +151,7 @@
         }
 
         @keyframes cart-bump {
+
             0%,
             100% {
                 transform: scale(1);
@@ -188,7 +190,8 @@
             min-width: 190px;
         }
 
-       .featured-section {
+        /* Destacados del día */
+        .featured-section {
             margin: 26px 0 16px;
         }
 
@@ -226,13 +229,13 @@
         }
 
         .featured {
-            min-height: 250px;
-            padding: 22px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 18px;
+            min-height: 260px;
             overflow: hidden;
+            padding: 22px;
             border: 1px solid #d9bfa5;
             border-radius: 20px;
             background:
@@ -286,19 +289,36 @@
             font-weight: bold;
         }
 
+        .featured-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
         .featured-button {
             padding: 10px 15px;
             border: 0;
             border-radius: 999px;
             background: var(--brown);
-            color: #fff;
-            font-weight: bold;
+            color: white;
             cursor: pointer;
+            font-weight: bold;
         }
 
         .featured-button:hover {
             background: var(--brown-dark);
             transform: translateY(-1px);
+        }
+
+        .featured-button.secondary {
+            border: 1px solid var(--brown);
+            background: white;
+            color: var(--brown);
+        }
+
+        .featured-button.secondary:hover {
+            background: #f7ead8;
+            color: var(--brown-dark);
         }
 
         .featured-icon {
@@ -309,32 +329,7 @@
             filter: drop-shadow(0 6px 5px #7b371420);
         }
 
-        @media (hover: hover) {
-            .featured:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 12px 30px #7b371424;
-            }
-        }
-
-        @media (max-width: 520px) {
-            .featured {
-                min-height: 0;
-                padding: 18px;
-            }
-
-            .featured-icon {
-                font-size: 46px;
-            }
-
-            .featured h3 {
-                font-size: 25px;
-            }
-
-            .featured p {
-                font-size: 14px;
-            }
-        }
-
+        /* Filtros */
         .quick-filters {
             display: flex;
             flex-wrap: wrap;
@@ -348,9 +343,9 @@
             border-radius: 999px;
             background: #fffaf5;
             color: #714326;
+            cursor: pointer;
             font-size: 13px;
             font-weight: bold;
-            cursor: pointer;
         }
 
         .quick-filter:hover,
@@ -362,17 +357,17 @@
 
         .tabs {
             display: flex;
-            gap: 8px;
             flex-wrap: wrap;
+            gap: 8px;
             margin: 14px 0 24px;
         }
 
         .tab {
+            padding: 10px 14px;
             border: 1px solid var(--brown);
+            border-radius: 999px;
             background: transparent;
             color: var(--brown);
-            border-radius: 999px;
-            padding: 10px 14px;
             cursor: pointer;
         }
 
@@ -382,6 +377,7 @@
             color: white;
         }
 
+        /* Productos */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -389,33 +385,33 @@
         }
 
         .card {
-            background: white;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 5px 18px #7b371414;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            border-radius: 18px;
+            background: white;
+            box-shadow: 0 5px 18px #7b371414;
         }
 
         .photo {
-            height: 160px;
-            background: linear-gradient(135deg, #b86b36, #f4d4a6);
             display: grid;
-            place-items: center;
-            font-size: 52px;
+            height: 160px;
             overflow: hidden;
+            place-items: center;
+            background: linear-gradient(135deg, #b86b36, #f4d4a6);
+            font-size: 52px;
         }
 
         .photo img {
+            display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
 
         .card main {
-            padding: 16px;
             flex: 1;
+            padding: 16px;
         }
 
         .card h3 {
@@ -424,10 +420,10 @@
         }
 
         .tag {
-            font-size: 12px;
             color: #88654c;
-            text-transform: uppercase;
+            font-size: 12px;
             letter-spacing: .08em;
+            text-transform: uppercase;
         }
 
         .desc {
@@ -509,126 +505,11 @@
             padding: 30px;
             border: 1px dashed #d9bfa5;
             border-radius: 15px;
-            text-align: center;
             color: #765;
-        }
-
-        .drawer {
-            position: fixed;
-            right: 18px;
-            bottom: 18px;
-            width: min(400px, calc(100% - 36px));
-            max-height: 82vh;
-            overflow: auto;
-            background: white;
-            border: 1px solid #dfc7ad;
-            border-radius: 18px;
-            box-shadow: 0 12px 40px #3b1c1233;
-            padding: 18px;
-            display: none;
-            z-index: 20;
-        }
-
-        .drawer.open {
-            display: block;
-        }
-
-        .drawer h2 {
-            margin: 0 0 12px;
-            color: var(--brown);
-        }
-
-        .row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid #eee;
-            padding: 10px 0;
-        }
-
-        .row-info {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            gap: 3px;
-            min-width: 0;
-        }
-
-        .row-info strong {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .row-variant {
-            color: #765b47;
-            font-size: 13px;
-        }
-
-        .row-price {
-            color: var(--brown);
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 3px;
-            border: 1px solid #dfc7ad;
-            border-radius: 999px;
-        }
-
-        .quantity-controls button {
-            display: grid;
-            width: 25px;
-            height: 25px;
-            margin: 0;
-            padding: 0;
-            place-items: center;
-            border: 0;
-            border-radius: 50%;
-            background: #f7ead8;
-            color: var(--brown);
-            cursor: pointer;
-            font-size: 17px;
-            font-weight: bold;
-            line-height: 1;
-        }
-
-        .quantity-controls button:hover {
-            background: var(--gold);
-            color: var(--brown-dark);
-        }
-
-        .quantity-value {
-            min-width: 18px;
             text-align: center;
-            color: var(--brown);
-            font-size: 13px;
-            font-weight: bold;
         }
 
-        .close {
-            float: right;
-            border: 0;
-            background: transparent;
-            color: var(--ink);
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .remove {
-            margin: 0 !important;
-            padding: 4px 7px !important;
-            border: 1px solid #c99b78 !important;
-            border-radius: 7px !important;
-            background: white !important;
-            color: var(--brown) !important;
-            font-size: 11px !important;
-        }
-
+        /* Selección de variantes */
         .variant-box {
             margin-top: 14px;
             padding: 12px;
@@ -689,6 +570,123 @@
             font-size: 12px;
         }
 
+        /* Carrito */
+        .drawer {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 20;
+            display: none;
+            width: min(410px, calc(100% - 36px));
+            max-height: 82vh;
+            overflow: auto;
+            padding: 18px;
+            border: 1px solid #dfc7ad;
+            border-radius: 18px;
+            background: white;
+            box-shadow: 0 12px 40px #3b1c1233;
+        }
+
+        .drawer.open {
+            display: block;
+        }
+
+        .drawer h2 {
+            margin: 0 0 12px;
+            color: var(--brown);
+        }
+
+        .close {
+            float: right;
+            border: 0;
+            background: transparent;
+            color: var(--ink);
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .row-info {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+
+        .row-info strong {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .row-variant {
+            color: #765b47;
+            font-size: 13px;
+        }
+
+        .row-price {
+            color: var(--brown);
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px;
+            border: 1px solid #dfc7ad;
+            border-radius: 999px;
+        }
+
+        .quantity-controls button {
+            display: grid;
+            width: 25px;
+            height: 25px;
+            margin: 0;
+            padding: 0;
+            place-items: center;
+            border: 0;
+            border-radius: 50%;
+            background: #f7ead8;
+            color: var(--brown);
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .quantity-controls button:hover {
+            background: var(--gold);
+            color: var(--brown-dark);
+        }
+
+        .quantity-value {
+            min-width: 18px;
+            color: var(--brown);
+            font-size: 13px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .remove {
+            margin: 0 !important;
+            padding: 4px 7px !important;
+            border: 1px solid #c99b78 !important;
+            border-radius: 7px !important;
+            background: white !important;
+            color: var(--brown) !important;
+            font-size: 11px !important;
+        }
+
         .customer-field {
             margin-top: 16px;
         }
@@ -732,22 +730,23 @@
             line-height: 1.4;
         }
 
+        /* Pie de página */
         .footer-info {
             max-width: 900px;
             margin: 70px auto 10px;
             padding: 22px 20px;
             border-top: 1px solid #d9bfa5;
-            text-align: center;
             color: #765b47;
             font-size: 12px;
+            text-align: center;
         }
 
         .footer-location,
         .footer-hours,
         .footer-links {
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             flex-wrap: wrap;
             gap: 6px 14px;
             margin-bottom: 11px;
@@ -796,16 +795,18 @@
         }
 
         @media (hover: hover) {
-            .card:hover {
+
+            .card:hover,
+            .featured:hover {
                 transform: translateY(-4px);
-                box-shadow: 0 10px 26px #7b371424;
+                box-shadow: 0 12px 30px #7b371424;
             }
         }
 
         @media (max-width: 620px) {
             header {
-                padding: 16px 5vw;
                 gap: 12px;
+                padding: 16px 5vw;
             }
 
             header::before {
@@ -832,27 +833,27 @@
                 font-size: 12px;
             }
 
+            .tools input,
+            .tools select {
+                width: 100%;
+                max-width: none;
+            }
+
             .featured {
+                min-height: 0;
                 padding: 18px;
             }
 
             .featured-icon {
-                min-width: auto;
-                font-size: 42px;
+                font-size: 46px;
+            }
+
+            .featured h3 {
+                font-size: 25px;
             }
 
             .featured p {
                 font-size: 14px;
-            }
-
-            .tools input,
-            .tools select {
-                max-width: none;
-                width: 100%;
-            }
-
-            .tools select {
-                flex: 1;
             }
 
             .footer-info {
@@ -913,7 +914,7 @@
 
             <div class="shop-status">
                 <span class="shop-status-dot"></span>
-                <span>Horarios: martes a sábados 7 a 13 y 16 a 19 · domingos 8 a 13</span>
+                <span>Horarios: mar. a sáb. 7–13 y 16–19 · dom. 8–13</span>
             </div>
         </div>
 
@@ -932,7 +933,7 @@
             </select>
         </div>
 
-          
+        <!-- Destacados del día -->
         <section class="featured-section" aria-labelledby="featured-title">
             <div class="featured-heading">
                 <span class="featured-kicker">✨ Recomendados del día</span>
@@ -941,7 +942,7 @@
             </div>
 
             <div class="featured-grid">
-                <!-- Destacado 1 -->
+                <!-- Combo Cookie + Café -->
                 <article class="featured">
                     <div class="featured-content">
                         <span class="featured-label">Cookie + café</span>
@@ -953,25 +954,23 @@
                             para disfrutar una pausa rica.
                         </p>
 
-                        <div class="featured-price">
-                            Desde $8.600
+                        <div class="featured-price">Desde $7.500</div>
+
+                        <div class="featured-actions">
+                            <button type="button" class="featured-button" onclick="goToCategory('Café')">
+                                Elegir café
+                            </button>
+
+                            <button type="button" class="featured-button secondary" onclick="searchProduct('Cookies')">
+                                Elegir cookie
+                            </button>
                         </div>
-
-                        <button
-                            type="button"
-                            class="featured-button"
-                            onclick="showCombo('cookie-cafe')"
-                        >
-                            Ver opciones
-                        </button>
                     </div>
 
-                    <div class="featured-icon" aria-hidden="true">
-                        ☕🍪
-                    </div>
+                    <div class="featured-icon" aria-hidden="true">☕🍪</div>
                 </article>
 
-                <!-- Destacado 2 -->
+                <!-- Combo Café + Budín -->
                 <article class="featured featured-budin">
                     <div class="featured-content">
                         <span class="featured-label">Café + budín</span>
@@ -983,26 +982,25 @@
                             de budín artesanal del día.
                         </p>
 
-                        <div class="featured-price">
-                            Desde $7.500
+                        <div class="featured-price">Desde $6.600</div>
+
+                        <div class="featured-actions">
+                            <button type="button" class="featured-button" onclick="goToCategory('Café')">
+                                Elegir café
+                            </button>
+
+                            <button type="button" class="featured-button secondary" onclick="searchProduct('budín')">
+                                Ver budín
+                            </button>
                         </div>
-
-                        <button
-                            type="button"
-                            class="featured-button"
-                            onclick="showCombo('cafe-budin')"
-                        >
-                            Ver opciones
-                        </button>
                     </div>
 
-                    <div class="featured-icon" aria-hidden="true">
-                        ☕🍰
-                    </div>
+                    <div class="featured-icon" aria-hidden="true">☕🍰</div>
                 </article>
             </div>
         </section>
 
+        <!-- Filtros rápidos -->
         <div class="quick-filters" aria-label="Filtros rápidos">
             <button class="quick-filter active" data-filter="all" onclick="selectQuickFilter('all', this)">
                 Todo el menú
@@ -1042,19 +1040,11 @@
             </div>
 
             <div class="footer-links">
-                <a
-                    href="https://www.instagram.com/donramon.patisserie"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
+                <a href="https://www.instagram.com/donramon.patisserie" target="_blank" rel="noopener noreferrer">
                     📷 Instagram
                 </a>
 
-                <a
-                    href="https://linktr.ee/donramonpatisserie"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
+                <a href="https://linktr.ee/donramonpatisserie" target="_blank" rel="noopener noreferrer">
                     🔗 Contacto
                 </a>
             </div>
@@ -1078,14 +1068,8 @@
         <div class="customer-field">
             <label for="customerName">Nombre del solicitante del pedido:</label>
 
-            <input
-                type="text"
-                id="customerName"
-                name="customerName"
-                placeholder="Ej.: Juan Pérez"
-                maxlength="100"
-                autocomplete="name"
-            >
+            <input type="text" id="customerName" name="customerName" placeholder="Ej.: Juan Pérez" maxlength="100"
+                autocomplete="name">
 
             <div class="customer-validation" id="customerValidation">
                 Ingresá el nombre de quien solicita el pedido.
@@ -1104,11 +1088,9 @@
             Enviar por WhatsApp
         </button>
 
-        <button
-            class="cart"
+        <button class="cart"
             style="background:transparent;color:var(--brown);border:1px solid var(--brown);margin-top:8px"
-            onclick="copyOrder()"
-        >
+            onclick="copyOrder()">
             Copiar resumen
         </button>
     </aside>
@@ -1325,9 +1307,7 @@
             const variants = getVariants(item);
 
             if (item[5] === 'Consultar') {
-                alert(
-                    `"${item[0]}" se agrega como pedido sujeto a confirmación de disponibilidad.`
-                );
+                alert(`"${item[0]}" se agrega como pedido sujeto a confirmación de disponibilidad.`);
             }
 
             if (variants.length === 0) {
@@ -1350,10 +1330,7 @@
         }
 
         function confirmVariant(index) {
-            const selected = document.querySelector(
-                `input[name="variant-${index}"]:checked`
-            );
-
+            const selected = document.querySelector(`input[name="variant-${index}"]:checked`);
             const validation = document.getElementById('validation-' + index);
 
             if (!selected) {
@@ -1364,9 +1341,7 @@
             const item = items[index];
 
             if (item[5] === 'Consultar') {
-                alert(
-                    `"${item[0]}" se agrega como pedido sujeto a confirmación de disponibilidad.`
-                );
+                alert(`"${item[0]}" se agrega como pedido sujeto a confirmación de disponibilidad.`);
             }
 
             const variantIndex = Number(selected.value);
@@ -1379,9 +1354,7 @@
         function cancelVariant(index) {
             const box = document.getElementById('variant-box-' + index);
             const button = document.getElementById('add-btn-' + index);
-            const selected = document.querySelector(
-                `input[name="variant-${index}"]:checked`
-            );
+            const selected = document.querySelector(`input[name="variant-${index}"]:checked`);
             const validation = document.getElementById('validation-' + index);
 
             if (selected) {
@@ -1549,9 +1522,7 @@
                 const variantText = item.variant ? ` - ${item.variant}` : '';
                 const quantityText = item.quantity > 1 ? ` x${item.quantity}` : '';
                 const itemTotal = money(item.price * item.quantity);
-                const confirmText = item.status === 'Consultar'
-                    ? ' (a confirmar)'
-                    : '';
+                const confirmText = item.status === 'Consultar' ? ' (a confirmar)' : '';
 
                 return `• ${item.name}${variantText}${quantityText}${confirmText} — $${itemTotal}`;
             }).join('\n');
@@ -1644,30 +1615,24 @@
 
             if (filter === 'coffee') {
                 cat = 'Café';
-                updateCategoryTabs();
-            }
-
-            if (filter === 'salty') {
+            } else if (filter === 'salty') {
                 cat = 'Salados';
-                updateCategoryTabs();
-            }
-
-            if (filter === 'all' || filter === 'available' || filter === 'sweet') {
+            } else {
                 cat = 'Todas';
-                updateCategoryTabs();
             }
 
+            updateCategoryTabs();
             render();
         }
 
         function goToCategory(category) {
             cat = category;
-            quickFilter = 'coffee';
+            quickFilter = 'all';
 
             document.querySelectorAll('.quick-filter').forEach(button => {
                 button.classList.toggle(
                     'active',
-                    button.dataset.filter === 'coffee'
+                    button.dataset.filter === 'all'
                 );
             });
 
@@ -1675,6 +1640,28 @@
             render();
 
             document.getElementById('tabs').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function searchProduct(term) {
+            cat = 'Todas';
+            quickFilter = 'all';
+
+            document.getElementById('search').value = term;
+
+            document.querySelectorAll('.quick-filter').forEach(button => {
+                button.classList.toggle(
+                    'active',
+                    button.dataset.filter === 'all'
+                );
+            });
+
+            updateCategoryTabs();
+            render();
+
+            document.getElementById('grid').scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
