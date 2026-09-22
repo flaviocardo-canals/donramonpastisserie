@@ -509,7 +509,7 @@
             text-align: center;
         }
 
-        /* Selección de variantes */
+        /* Variantes */
         .variant-box {
             margin-top: 14px;
             padding: 12px;
@@ -709,6 +709,11 @@
             font: inherit;
         }
 
+        .customer-field input[aria-invalid="true"] {
+            border-color: var(--danger);
+            box-shadow: 0 0 0 3px #aa333320;
+        }
+
         .customer-validation {
             display: none;
             margin-top: 6px;
@@ -730,7 +735,7 @@
             line-height: 1.4;
         }
 
-        /* Pie de página */
+        /* Pie */
         .footer-info {
             max-width: 900px;
             margin: 70px auto 10px;
@@ -933,7 +938,6 @@
             </select>
         </div>
 
-        <!-- Destacados del día -->
         <section class="featured-section" aria-labelledby="featured-title">
             <div class="featured-heading">
                 <span class="featured-kicker">✨ Recomendados del día</span>
@@ -942,12 +946,10 @@
             </div>
 
             <div class="featured-grid">
-                <!-- Cookie + café -->
                 <article class="featured">
                     <div class="featured-content">
-                        <span class="featured-label">Café + cookie</span>
-
-                        <h3>Combo 1</h3>
+                        <span class="featured-label">Cookie + café</span>
+                        <h3>Combo merienda</h3>
 
                         <p>
                             Elegí un café y acompañalo con una cookie artesanal
@@ -957,19 +959,11 @@
                         <div class="featured-price">Desde $7.500</div>
 
                         <div class="featured-actions">
-                            <button
-                                type="button"
-                                class="featured-button"
-                                onclick="goToCategory('Café')"
-                            >
+                            <button type="button" class="featured-button" onclick="goToCategory('Café')">
                                 Elegir café
                             </button>
 
-                            <button
-                                type="button"
-                                class="featured-button secondary"
-                                onclick="searchProduct('Cookies')"
-                            >
+                            <button type="button" class="featured-button secondary" onclick="searchProduct('Cookies')">
                                 Elegir cookie
                             </button>
                         </div>
@@ -978,34 +972,24 @@
                     <div class="featured-icon" aria-hidden="true">☕🍪</div>
                 </article>
 
-                <!-- Café + budín -->
                 <article class="featured featured-budin">
                     <div class="featured-content">
                         <span class="featured-label">Café + budín</span>
-
-                        <h3>Combo 2</h3>
+                        <h3>Merienda casera</h3>
 
                         <p>
                             Disfrutá un café a elección junto con una porción
                             de budín artesanal del día.
                         </p>
 
-                        <div class="featured-price">Desde $7.600</div>
+                        <div class="featured-price">Desde $6.600</div>
 
                         <div class="featured-actions">
-                            <button
-                                type="button"
-                                class="featured-button"
-                                onclick="goToCategory('Café')"
-                            >
+                            <button type="button" class="featured-button" onclick="goToCategory('Café')">
                                 Elegir café
                             </button>
 
-                            <button
-                                type="button"
-                                class="featured-button secondary"
-                                onclick="searchProduct('budín')"
-                            >
+                            <button type="button" class="featured-button secondary" onclick="searchProduct('budín')">
                                 Ver budín
                             </button>
                         </div>
@@ -1016,7 +1000,6 @@
             </div>
         </section>
 
-        <!-- Filtros rápidos -->
         <div class="quick-filters" aria-label="Filtros rápidos">
             <button class="quick-filter active" data-filter="all" onclick="selectQuickFilter('all', this)">
                 Todo el menú
@@ -1082,12 +1065,29 @@
         <div id="items"></div>
 
         <div class="customer-field">
-            <label for="customerName">Nombre (solicitante del pedido):</label>
+            <label for="customerName">
+                Nombre (solicitante del pedido):
+            </label>
 
-            <input type="text" id="customerName" name="customerName" placeholder="Ej.: Juan Pérez" maxlength="100"
-                autocomplete="name">
+            <input
+                type="text"
+                id="customerName"
+                name="customerName"
+                placeholder="Ej.: Juan Pérez"
+                maxlength="100"
+                minlength="2"
+                autocomplete="name"
+                required
+                aria-required="true"
+                aria-describedby="customerValidation"
+            >
 
-            <div class="customer-validation" id="customerValidation">
+            <div
+                class="customer-validation"
+                id="customerValidation"
+                role="alert"
+                aria-live="polite"
+            >
                 Ingresá el nombre de quien solicita el pedido.
             </div>
         </div>
@@ -1100,13 +1100,16 @@
             Los productos marcados como “Consultar” se confirmarán según disponibilidad del día.
         </p>
 
-        <button class="cart" onclick="sendWhatsApp()">
+        <button class="cart" type="button" onclick="sendWhatsApp()">
             Enviar por WhatsApp
         </button>
 
-        <button class="cart"
+        <button
+            class="cart"
+            type="button"
             style="background:transparent;color:var(--brown);border:1px solid var(--brown);margin-top:8px"
-            onclick="copyOrder()">
+            onclick="copyOrder()"
+        >
             Copiar resumen
         </button>
     </aside>
@@ -1283,6 +1286,7 @@
 
                                         <button
                                             class="add-selected"
+                                            type="button"
                                             onclick="confirmVariant(${index})"
                                         >
                                             Agregar al pedido
@@ -1290,6 +1294,7 @@
 
                                         <button
                                             class="cancel-selected"
+                                            type="button"
                                             onclick="cancelVariant(${index})"
                                         >
                                             Cancelar
@@ -1299,6 +1304,7 @@
                             </main>
 
                             <button
+                                type="button"
                                 ${isOutOfStock ? 'disabled' : ''}
                                 id="add-btn-${index}"
                                 onclick="startAdd(${index})"
@@ -1522,13 +1528,18 @@
             const validation = document.getElementById('customerValidation');
             const customerName = input.value.trim();
 
-            if (!customerName) {
+            input.value = customerName;
+
+            if (customerName.length < 2) {
                 validation.style.display = 'block';
+                input.setAttribute('aria-invalid', 'true');
                 input.focus();
+
                 return null;
             }
 
             validation.style.display = 'none';
+            input.removeAttribute('aria-invalid');
 
             return customerName;
         }
@@ -1637,37 +1648,17 @@
                 cat = 'Todas';
             }
 
+            document.getElementById('search').value = '';
+
             updateCategoryTabs();
             render();
         }
 
-       function goToCategory(category) {
+        function goToCategory(category) {
             cat = category;
             quickFilter = 'all';
 
             document.getElementById('search').value = '';
-
-            document.querySelectorAll('.quick-filter').forEach(button => {
-                button.classList.toggle(
-                    'active',
-                    button.dataset.filter === 'all'
-                );
-            });
-
-            updateCategoryTabs();
-            render();
-
-            document.getElementById('grid').scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-
-        function searchProduct(term) {
-            cat = 'Todas';
-            quickFilter = 'all';
-
-            document.getElementById('search').value = term;
 
             document.querySelectorAll('.quick-filter').forEach(button => {
                 button.classList.toggle(
@@ -1750,9 +1741,11 @@
             });
         }
 
-        function selectCategory(category, button) {
+        function selectCategory(category) {
             cat = category;
             quickFilter = 'all';
+
+            document.getElementById('search').value = '';
 
             document.querySelectorAll('.quick-filter').forEach(filterButton => {
                 filterButton.classList.toggle(
@@ -1762,11 +1755,6 @@
             });
 
             updateCategoryTabs();
-
-            if (button) {
-                button.classList.add('active');
-            }
-
             render();
         }
 
@@ -1785,9 +1773,10 @@
             document.getElementById('tabs').innerHTML = categories
                 .map(category => `
                     <button
+                        type="button"
                         class="tab ${category === 'Todas' ? 'active' : ''}"
                         data-category="${escapeHtml(category)}"
-                        onclick="selectCategory('${category.replace(/'/g, "\\'")}', this)"
+                        onclick="selectCategory('${category.replace(/'/g, "\\'")}')"
                     >
                         ${escapeHtml(category)}
                     </button>
@@ -1798,8 +1787,11 @@
             document.getElementById('sort').addEventListener('change', render);
 
             document.getElementById('customerName').addEventListener('input', function () {
-                if (this.value.trim()) {
-                    document.getElementById('customerValidation').style.display = 'none';
+                const validation = document.getElementById('customerValidation');
+
+                if (this.value.trim().length >= 2) {
+                    validation.style.display = 'none';
+                    this.removeAttribute('aria-invalid');
                 }
             });
 
