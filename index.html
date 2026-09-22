@@ -188,24 +188,69 @@
             min-width: 190px;
         }
 
+       .featured-section {
+            margin: 26px 0 16px;
+        }
+
+        .featured-heading {
+            margin-bottom: 14px;
+        }
+
+        .featured-kicker {
+            display: inline-block;
+            margin-bottom: 5px;
+            color: #88654c;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .featured-heading h2 {
+            margin: 0;
+            color: var(--brown);
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(24px, 4vw, 34px);
+        }
+
+        .featured-heading p {
+            margin: 7px 0 0;
+            color: #765b47;
+            line-height: 1.45;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: 16px;
+        }
+
         .featured {
-            margin: 22px 0 10px;
+            min-height: 250px;
             padding: 22px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
+            gap: 18px;
             overflow: hidden;
             border: 1px solid #d9bfa5;
             border-radius: 20px;
             background:
-                radial-gradient(circle at 92% 15%, #f4d4a6 0, transparent 35%),
+                radial-gradient(circle at 92% 15%, #f4d4a6 0, transparent 36%),
                 linear-gradient(135deg, #fffaf4, #f5dfc5);
             box-shadow: 0 8px 24px #7b371418;
         }
 
+        .featured-budin {
+            background:
+                radial-gradient(circle at 92% 15%, #ecd1ad 0, transparent 36%),
+                linear-gradient(135deg, #fffaf4, #f0dcc4);
+        }
+
         .featured-content {
-            max-width: 650px;
+            position: relative;
+            z-index: 1;
+            max-width: 360px;
         }
 
         .featured-label {
@@ -213,7 +258,7 @@
             margin-bottom: 8px;
             padding: 6px 10px;
             border-radius: 999px;
-            background: white;
+            background: #fff;
             color: var(--brown);
             font-size: 12px;
             font-weight: bold;
@@ -221,15 +266,14 @@
             text-transform: uppercase;
         }
 
-        .featured h2 {
+        .featured h3 {
             margin: 0;
             color: var(--brown);
             font-family: "Playfair Display", Georgia, serif;
-            font-size: clamp(26px, 4vw, 38px);
+            font-size: clamp(25px, 3vw, 32px);
         }
 
         .featured p {
-            max-width: 540px;
             margin: 9px 0;
             color: #5d4a3c;
             line-height: 1.5;
@@ -238,7 +282,7 @@
         .featured-price {
             margin: 14px 0;
             color: var(--brown);
-            font-size: 21px;
+            font-size: 20px;
             font-weight: bold;
         }
 
@@ -247,7 +291,7 @@
             border: 0;
             border-radius: 999px;
             background: var(--brown);
-            color: white;
+            color: #fff;
             font-weight: bold;
             cursor: pointer;
         }
@@ -258,9 +302,37 @@
         }
 
         .featured-icon {
-            min-width: 112px;
-            font-size: 64px;
+            flex: 0 0 auto;
+            font-size: clamp(48px, 6vw, 72px);
+            line-height: 1;
             text-align: center;
+            filter: drop-shadow(0 6px 5px #7b371420);
+        }
+
+        @media (hover: hover) {
+            .featured:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 30px #7b371424;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .featured {
+                min-height: 0;
+                padding: 18px;
+            }
+
+            .featured-icon {
+                font-size: 46px;
+            }
+
+            .featured h3 {
+                font-size: 25px;
+            }
+
+            .featured p {
+                font-size: 14px;
+            }
         }
 
         .quick-filters {
@@ -861,22 +933,74 @@
         </div>
 
           
-        <section class="featured" aria-label="Producto recomendado">
-            <div class="featured-content">
-                <span class="featured-label">✨ Recomendado de hoy</span>
-                <h2>Una pausa rica</h2>
-                <p>
-                    Elegí tu CAFÉ favorito y acompañalo con una COOKIES artesanal
-                    o con alguno de nuestros BUDINES recién hechos.
-                </p>
-                <div class="featured-price">Cafés + adicional $7500</div>
-
-                <button class="featured-button" onclick="goToCategory('Café')">
-                    Ver cafés
-                </button>
+        <section class="featured-section" aria-labelledby="featured-title">
+            <div class="featured-heading">
+                <span class="featured-kicker">✨ Recomendados del día</span>
+                <h2 id="featured-title">Combinaciones para disfrutar</h2>
+                <p>Elegí una opción y encontrá rápidamente productos para tu merienda.</p>
             </div>
 
-            <div class="featured-icon" aria-hidden="true">☕🍪</div>
+            <div class="featured-grid">
+                <!-- Destacado 1 -->
+                <article class="featured">
+                    <div class="featured-content">
+                        <span class="featured-label">Cookie + café</span>
+
+                        <h3>Combo merienda</h3>
+
+                        <p>
+                            Elegí un café y acompañalo con una cookie artesanal
+                            para disfrutar una pausa rica.
+                        </p>
+
+                        <div class="featured-price">
+                            Desde $8.600
+                        </div>
+
+                        <button
+                            type="button"
+                            class="featured-button"
+                            onclick="showCombo('cookie-cafe')"
+                        >
+                            Ver opciones
+                        </button>
+                    </div>
+
+                    <div class="featured-icon" aria-hidden="true">
+                        ☕🍪
+                    </div>
+                </article>
+
+                <!-- Destacado 2 -->
+                <article class="featured featured-budin">
+                    <div class="featured-content">
+                        <span class="featured-label">Café + budín</span>
+
+                        <h3>Merienda casera</h3>
+
+                        <p>
+                            Disfrutá un café a elección junto con una porción
+                            de budín artesanal del día.
+                        </p>
+
+                        <div class="featured-price">
+                            Desde $7.500
+                        </div>
+
+                        <button
+                            type="button"
+                            class="featured-button"
+                            onclick="showCombo('cafe-budin')"
+                        >
+                            Ver opciones
+                        </button>
+                    </div>
+
+                    <div class="featured-icon" aria-hidden="true">
+                        ☕🍰
+                    </div>
+                </article>
+            </div>
         </section>
 
         <div class="quick-filters" aria-label="Filtros rápidos">
