@@ -5,23 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Don Ramón Patisserie · Menú</title>
+
     <style>
         :root {
             --brown: #7b3714;
             --cream: #fbf5ee;
             --gold: #d9a56f;
-            --ink: #33261f
+            --ink: #33261f;
         }
 
         * {
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
         body {
             margin: 0;
             background: var(--cream);
             color: var(--ink);
-            font: 16px Arial, sans-serif
+            font: 16px Arial, sans-serif;
         }
 
         header {
@@ -33,7 +34,7 @@
             gap: 20px;
             position: sticky;
             top: 0;
-            z-index: 3
+            z-index: 3;
         }
 
         header:before {
@@ -43,19 +44,19 @@
             height: 78px;
             background: url("02-banco-visual/logo-don-ramon-patisserie.jpg") center/cover no-repeat;
             border-radius: 50%;
-            box-shadow: 0 3px 10px #7b371425
+            box-shadow: 0 3px 10px #7b371425;
         }
 
         h1 {
             margin: 0;
             color: var(--brown);
             font-size: clamp(28px, 5vw, 52px);
-            letter-spacing: .04em
+            letter-spacing: .04em;
         }
 
         header p {
             margin: 7px 0 0;
-            color: #714326
+            color: #714326;
         }
 
         .cart {
@@ -65,34 +66,32 @@
             border-radius: 999px;
             padding: 12px 18px;
             font-weight: bold;
-            cursor: pointer
+            cursor: pointer;
         }
 
         .wrap {
             max-width: 1200px;
             margin: auto;
-            padding: 24px 6vw
+            padding: 24px 6vw;
         }
 
         .tools {
             display: flex;
-            gap: 10px; /* espacio entre elementos */
+            gap: 10px;
         }
 
-            .tools input,
-            .tools select {
-            max-width: 200px;   /* ancho máximo más reducido */
-            padding: 6px 10px;  /* menos relleno interno */
-            font-size: 14px;    /* tipografía más compacta */
+        .tools input,
+        .tools select {
+            max-width: 200px;
+            padding: 6px 10px;
+            font-size: 14px;
         }
-
-
 
         .tabs {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin: 14px 0 24px
+            margin: 14px 0 24px;
         }
 
         .tab {
@@ -101,19 +100,19 @@
             color: var(--brown);
             border-radius: 999px;
             padding: 10px 14px;
-            cursor: pointer
+            cursor: pointer;
         }
 
         .tab.active,
         .tab:hover {
             background: var(--brown);
-            color: white
+            color: white;
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 18px
+            gap: 18px;
         }
 
         .card {
@@ -122,7 +121,7 @@
             overflow: hidden;
             box-shadow: 0 5px 18px #7b371414;
             display: flex;
-            flex-direction: column
+            flex-direction: column;
         }
 
         .photo {
@@ -131,53 +130,53 @@
             display: grid;
             place-items: center;
             font-size: 52px;
-            overflow: hidden
+            overflow: hidden;
         }
 
         .photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block
+            display: block;
         }
 
         .card main {
             padding: 16px;
-            flex: 1
+            flex: 1;
         }
 
         .card h3 {
             margin: 0 0 6px;
-            color: var(--brown)
+            color: var(--brown);
         }
 
         .tag {
             font-size: 12px;
             color: #88654c;
             text-transform: uppercase;
-            letter-spacing: .08em
+            letter-spacing: .08em;
         }
 
         .desc {
             line-height: 1.4;
             color: #5d4a3c;
-            margin: 9px 0
+            margin: 9px 0;
         }
 
         .price {
             font-weight: bold;
             font-size: 20px;
-            color: var(--brown)
+            color: var(--brown);
         }
 
         .status {
             font-size: 12px;
             margin-top: 8px;
-            color: #866044
+            color: #866044;
         }
 
         .sold {
-            color: #a33
+            color: #a33;
         }
 
         .card button {
@@ -187,18 +186,18 @@
             border-radius: 9px;
             background: var(--brown);
             color: white;
-            cursor: pointer
+            cursor: pointer;
         }
 
         .card button:disabled {
             background: #c9c1b9;
-            cursor: not-allowed
+            cursor: not-allowed;
         }
 
         .empty {
             padding: 30px;
             text-align: center;
-            color: #765
+            color: #765;
         }
 
         .drawer {
@@ -214,16 +213,16 @@
             box-shadow: 0 12px 40px #3b1c1233;
             padding: 18px;
             display: none;
-            z-index: 5
+            z-index: 5;
         }
 
         .drawer.open {
-            display: block
+            display: block;
         }
 
         .drawer h2 {
             margin: 0 0 12px;
-            color: var(--brown)
+            color: var(--brown);
         }
 
         .row {
@@ -232,19 +231,19 @@
             align-items: center;
             gap: 10px;
             border-bottom: 1px solid #eee;
-            padding: 8px 0
+            padding: 8px 0;
         }
 
         .row-info {
             display: flex;
             flex-direction: column;
             gap: 3px;
-            flex: 1
+            flex: 1;
         }
 
         .row-variant {
             font-size: 13px;
-            color: #765b47
+            color: #765b47;
         }
 
         .close {
@@ -252,19 +251,19 @@
             border: 0;
             background: transparent;
             font-size: 22px;
-            cursor: pointer
+            cursor: pointer;
         }
 
         .note {
             margin-top: 26px;
             font-size: 13px;
-            color: #765b47
+            color: #765b47;
         }
 
         footer {
             padding: 30px 6vw;
             text-align: center;
-            color: #765b47
+            color: #765b47;
         }
 
         .remove {
@@ -273,7 +272,7 @@
             color: #7b3714 !important;
             margin: 0 !important;
             padding: 4px 8px !important;
-            font-size: 12px
+            font-size: 12px;
         }
 
         .variant-box {
@@ -281,19 +280,19 @@
             padding: 12px;
             border: 1px solid #dfc7ad;
             border-radius: 12px;
-            background: #fbf5ee
+            background: #fbf5ee;
         }
 
         .variant-title {
             font-weight: bold;
             color: var(--brown);
-            margin-bottom: 9px
+            margin-bottom: 9px;
         }
 
         .variant-options {
             display: flex;
             flex-direction: column;
-            gap: 7px
+            gap: 7px;
         }
 
         .variant-option {
@@ -304,21 +303,21 @@
             border-radius: 8px;
             background: white;
             border: 1px solid #ead8c5;
-            cursor: pointer
+            cursor: pointer;
         }
 
         .variant-option:hover {
-            border-color: var(--brown)
+            border-color: var(--brown);
         }
 
         .variant-option input {
             padding: 0;
-            margin: 0
+            margin: 0;
         }
 
         .add-selected {
             width: 100%;
-            margin: 12px 0 0 !important
+            margin: 12px 0 0 !important;
         }
 
         .cancel-selected {
@@ -326,33 +325,51 @@
             margin: 7px 0 0 !important;
             background: white !important;
             color: var(--brown) !important;
-            border: 1px solid var(--brown) !important
+            border: 1px solid var(--brown) !important;
         }
 
         .validation {
             font-size: 12px;
             color: #a33;
             margin-top: 7px;
-            display: none
+            display: none;
         }
 
-        @media(max-width:520px) {
-            header:before {
-                width: 56px;
-                height: 56px;
-                flex-basis: 56px
-            }
-
-            header {
-                padding: 18px 5vw
-            }
-
-            h1 {
-                font-size: 28px
-            }
+        .customer-field {
+            margin-top: 16px;
         }
 
-            
+        .customer-field label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--brown);
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .customer-field input {
+            width: 100%;
+            padding: 10px 11px;
+            border: 1px solid #dfc7ad;
+            border-radius: 9px;
+            background: #fff;
+            color: var(--ink);
+            font: inherit;
+        }
+
+        .customer-field input:focus {
+            outline: none;
+            border-color: var(--brown);
+            box-shadow: 0 0 0 3px #7b371420;
+        }
+
+        .customer-validation {
+            display: none;
+            margin-top: 6px;
+            color: #a33;
+            font-size: 12px;
+        }
+
         .footer-info {
             max-width: 900px;
             margin: 70px auto 10px;
@@ -417,7 +434,29 @@
             color: #8a715f;
         }
 
+        .titulo {
+            font-family: "Playfair Display", Georgia, serif;
+            font-weight: 700;
+            color: #8B5E3C;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
         @media (max-width: 520px) {
+            header:before {
+                width: 56px;
+                height: 56px;
+                flex-basis: 56px;
+            }
+
+            header {
+                padding: 18px 5vw;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
             .footer-info {
                 margin-top: 55px;
                 padding: 18px 12px;
@@ -450,15 +489,6 @@
                 font-size: 9px;
             }
         }
-
-        .titulo {
-            font-family: 'Playfair Display', 'Georgia', serif;
-            font-weight: 700;
-            color: #8B5E3C; /* tono marrón cálido similar al logo */
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            }
-
     </style>
 </head>
 
@@ -469,12 +499,15 @@
             <p>Pastelería artesanal y café al paso | Hecho con amor</p>
         </div>
 
-        <button class="cart" onclick="toggleCart()">Pedido <span id="count">0</span></button>
+        <button class="cart" onclick="toggleCart()">
+            Pedido <span id="count">0</span>
+        </button>
     </header>
 
     <div class="wrap">
         <div class="tools">
             <input id="search" placeholder="Buscar producto…">
+
             <select id="sort">
                 <option value="default">Orden</option>
                 <option value="price">Precio menor a mayor</option>
@@ -482,17 +515,42 @@
         </div>
 
         <nav class="tabs" id="tabs"></nav>
+
         <section class="grid" id="grid"></section>
 
         <section class="footer-info">
-            <div class="footer-location"> <strong>📍 Don Ramón Pâtisserie</strong> <span>Muñoz 921 · San Miguel - Buenos
-                    Aires</span> </div>
-            <div class="footer-hours"> <strong>🕐 Horarios</strong> <span>Martes a sábados: 7 a 13 y 16 a 19
-                    horas</span><span>Domingos: 8 a 13 horas</span> </div>
-            <div class="footer-links"> <a href="https://www.instagram.com/donramon.patisserie" target="_blank"> 📷
-                    Instagram </a> <a href="https://linktr.ee/donramonpatisserie" target="_blank"> 🔗 Contacto </a>
+            <div class="footer-location">
+                <strong>📍 Don Ramón Pâtisserie</strong>
+                <span>Muñoz 921 · San Miguel - Buenos Aires</span>
             </div>
-            <div class="footer-note"> Precios tomados de la carta de referencia.<br> Consultar disponibilidad del día.
+
+            <div class="footer-hours">
+                <strong>🕐 Horarios</strong>
+                <span>Martes a sábados: 7 a 13 y 16 a 19 horas</span>
+                <span>Domingos: 8 a 13 horas</span>
+            </div>
+
+            <div class="footer-links">
+                <a
+                    href="https://www.instagram.com/donramon.patisserie"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    📷 Instagram
+                </a>
+
+                <a
+                    href="https://linktr.ee/donramonpatisserie"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    🔗 Contacto
+                </a>
+            </div>
+
+            <div class="footer-note">
+                Precios tomados de la carta de referencia.<br>
+                Consultar disponibilidad del día.
             </div>
         </section>
     </div>
@@ -500,14 +558,42 @@
     <footer>Don Ramón Patisserie · Menú digital</footer>
 
     <aside class="drawer" id="drawer">
-        <button class="close" onclick="toggleCart()">×</button>
+        <button class="close" onclick="toggleCart()" aria-label="Cerrar pedido">×</button>
+
         <h2>Tu pedido</h2>
+
         <div id="items"></div>
+
+        <div class="customer-field">
+            <label for="customerName">Nombre del solicitante del pedido:</label>
+
+            <input
+                type="text"
+                id="customerName"
+                name="customerName"
+                placeholder="Ej.: Juan Pérez"
+                maxlength="100"
+                autocomplete="name"
+            >
+
+            <div class="customer-validation" id="customerValidation">
+                Ingresá el nombre de quien solicita el pedido.
+            </div>
+        </div>
+
         <p><strong>Total: $<span id="total">0</span></strong></p>
-        <button class="cart" onclick="sendWhatsApp()">Enviar por WhatsApp</button>
-        <button class="cart"
+
+        <button class="cart" onclick="sendWhatsApp()">
+            Enviar por WhatsApp
+        </button>
+
+        <button
+            class="cart"
             style="background:transparent;color:var(--brown);border:1px solid var(--brown);margin-top:8px"
-            onclick="copyOrder()">Copiar resumen</button>
+            onclick="copyOrder()"
+        >
+            Copiar resumen
+        </button>
     </aside>
 
     <script>
@@ -551,49 +637,109 @@
         function getVariants(item) {
             const variants = item[2].split(' / ').map(v => v.trim());
             const prices = item[3].split(' / ').map(v => Number(v.trim()));
-            return variants.length > 1 ? variants.map((name, i) => ({ name, price: prices[i] ?? prices[0] })) : [];
+
+            return variants.length > 1
+                ? variants.map((name, i) => ({
+                    name,
+                    price: prices[i] ?? prices[0]
+                }))
+                : [];
         }
 
         function render() {
             const q = document.getElementById('search').value.toLowerCase();
-            let a = items.filter(x => (cat === 'Todas' || x[1] === cat) && x[0].toLowerCase().includes(q));
-            if (document.getElementById('sort').value === 'price') a.sort((x, y) => parseInt(x[3]) - parseInt(y[3]));
 
-            document.getElementById('grid').innerHTML = a.map(x => {
-                const idx = items.indexOf(x);
-                const sinStock = x[5] === 'SIN STOCK';
-                const variants = getVariants(x);
+            let filteredItems = items.filter(item =>
+                (cat === 'Todas' || item[1] === cat) &&
+                item[0].toLowerCase().includes(q)
+            );
 
-                return `<article class="card" id="card-${idx}">
-<div class="photo">${x[6]}</div>
-<main>
-<div class="tag">${x[1]} · ${x[2]}</div>
-<h3>${x[0]}</h3>
-<p class="desc">${x[4]}</p>
-<div class="price">${x[3].includes('/') ? '$' + x[3].split(' / ').map(v => money(+v)).join(' / $') : '$' + money(+x[3])}</div>
-<div class="status ${sinStock ? 'sold' : ''}">${x[5]}</div>
+            if (document.getElementById('sort').value === 'price') {
+                filteredItems.sort((a, b) => parseInt(a[3]) - parseInt(b[3]));
+            }
 
-${variants.length > 0 && !sinStock ? `
-<div class="variant-box" id="variant-box-${idx}" style="display:none">
-<div class="variant-title">Elegí una opción:</div>
-<div class="variant-options">
-${variants.map((v, j) => `
-<label class="variant-option">
-<input type="radio" name="variant-${idx}" value="${j}">
-<span>${v.name} — $${money(v.price)}</span>
-</label>`).join('')}
-</div>
-<div class="validation" id="validation-${idx}">Tenés que elegir una opción para agregar el producto.</div>
-<button class="add-selected" onclick="confirmVariant(${idx})">Agregar al pedido</button>
-<button class="cancel-selected" onclick="cancelVariant(${idx})">Cancelar</button>
-</div>`: ''}
-</main>
+            document.getElementById('grid').innerHTML =
+                filteredItems.map(item => {
+                    const idx = items.indexOf(item);
+                    const sinStock = item[5] === 'SIN STOCK';
+                    const variants = getVariants(item);
 
-<button ${sinStock ? 'disabled' : ''} id="add-btn-${idx}" onclick="startAdd(${idx})">
-${sinStock ? 'Sin stock' : variants.length > 0 ? 'Elegir opción' : 'Agregar al pedido'}
-</button>
-</article>`;
-            }).join('') || '<p class="empty">No encontramos productos con ese criterio.</p>';
+                    const priceText = item[3].includes('/')
+                        ? '$' + item[3]
+                            .split(' / ')
+                            .map(price => money(Number(price)))
+                            .join(' / $')
+                        : '$' + money(Number(item[3]));
+
+                    return `
+                        <article class="card" id="card-${idx}">
+                            <div class="photo">${item[6]}</div>
+
+                            <main>
+                                <div class="tag">${item[1]} · ${item[2]}</div>
+                                <h3>${item[0]}</h3>
+                                <p class="desc">${item[4]}</p>
+                                <div class="price">${priceText}</div>
+                                <div class="status ${sinStock ? 'sold' : ''}">
+                                    ${item[5]}
+                                </div>
+
+                                ${variants.length > 0 && !sinStock ? `
+                                    <div class="variant-box" id="variant-box-${idx}" style="display:none">
+                                        <div class="variant-title">Elegí una opción:</div>
+
+                                        <div class="variant-options">
+                                            ${variants.map((variant, variantIndex) => `
+                                                <label class="variant-option">
+                                                    <input
+                                                        type="radio"
+                                                        name="variant-${idx}"
+                                                        value="${variantIndex}"
+                                                    >
+                                                    <span>
+                                                        ${variant.name} — $${money(variant.price)}
+                                                    </span>
+                                                </label>
+                                            `).join('')}
+                                        </div>
+
+                                        <div class="validation" id="validation-${idx}">
+                                            Tenés que elegir una opción para agregar el producto.
+                                        </div>
+
+                                        <button
+                                            class="add-selected"
+                                            onclick="confirmVariant(${idx})"
+                                        >
+                                            Agregar al pedido
+                                        </button>
+
+                                        <button
+                                            class="cancel-selected"
+                                            onclick="cancelVariant(${idx})"
+                                        >
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                ` : ''}
+                            </main>
+
+                            <button
+                                ${sinStock ? 'disabled' : ''}
+                                id="add-btn-${idx}"
+                                onclick="startAdd(${idx})"
+                            >
+                                ${sinStock
+                                    ? 'Sin stock'
+                                    : variants.length > 0
+                                        ? 'Elegir opción'
+                                        : 'Agregar al pedido'
+                                }
+                            </button>
+                        </article>
+                    `;
+                }).join('')
+                || '<p class="empty">No encontramos productos con ese criterio.</p>';
 
             applyPhotos();
         }
@@ -612,12 +758,19 @@ ${sinStock ? 'Sin stock' : variants.length > 0 ? 'Elegir opción' : 'Agregar al 
             if (box) {
                 box.style.display = 'block';
                 btn.style.display = 'none';
-                box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                box.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
             }
         }
 
         function confirmVariant(i) {
-            const selected = document.querySelector(`input[name="variant-${i}"]:checked`);
+            const selected = document.querySelector(
+                `input[name="variant-${i}"]:checked`
+            );
+
             const validation = document.getElementById('validation-' + i);
 
             if (!selected) {
@@ -635,13 +788,26 @@ ${sinStock ? 'Sin stock' : variants.length > 0 ? 'Elegir opción' : 'Agregar al 
         function cancelVariant(i) {
             const box = document.getElementById('variant-box-' + i);
             const btn = document.getElementById('add-btn-' + i);
-            const selected = document.querySelector(`input[name="variant-${i}"]:checked`);
+            const selected = document.querySelector(
+                `input[name="variant-${i}"]:checked`
+            );
             const validation = document.getElementById('validation-' + i);
 
-            if (selected) selected.checked = false;
-            if (validation) validation.style.display = 'none';
-            if (box) box.style.display = 'none';
-            if (btn) btn.style.display = 'block';
+            if (selected) {
+                selected.checked = false;
+            }
+
+            if (validation) {
+                validation.style.display = 'none';
+            }
+
+            if (box) {
+                box.style.display = 'none';
+            }
+
+            if (btn) {
+                btn.style.display = 'block';
+            }
         }
 
         function addItem(item, variant, price) {
@@ -651,25 +817,45 @@ ${sinStock ? 'Sin stock' : variants.length > 0 ? 'Elegir opción' : 'Agregar al 
                 variant: variant,
                 price: Number(price)
             });
+
             update();
+
             document.getElementById('drawer').classList.add('open');
         }
 
         function update() {
             document.getElementById('count').textContent = order.length;
 
-            document.getElementById('items').innerHTML = order.map((x, i) => `
-<div class="row">
-<div class="row-info">
-<strong>${x.name}</strong>
-${x.variant ? `<span class="row-variant">${x.variant}</span>` : ''}
-</div>
-<b>$${money(x.price)}</b>
-<button class="remove" onclick="removeItem(${i})">Quitar</button>
-</div>
-`).join('') || '<p>Tu pedido está vacío.</p>';
+            document.getElementById('items').innerHTML =
+                order.map((item, index) => `
+                    <div class="row">
+                        <div class="row-info">
+                            <strong>${item.name}</strong>
 
-            document.getElementById('total').textContent = money(order.reduce((s, x) => s + x.price, 0));
+                            ${item.variant
+                                ? `<span class="row-variant">${item.variant}</span>`
+                                : ''
+                            }
+                        </div>
+
+                        <b>$${money(item.price)}</b>
+
+                        <button
+                            class="remove"
+                            onclick="removeItem(${index})"
+                        >
+                            Quitar
+                        </button>
+                    </div>
+                `).join('')
+                || '<p>Tu pedido está vacío.</p>';
+
+            const total = order.reduce(
+                (sum, item) => sum + item.price,
+                0
+            );
+
+            document.getElementById('total').textContent = money(total);
         }
 
         function removeItem(i) {
@@ -681,17 +867,55 @@ ${x.variant ? `<span class="row-variant">${x.variant}</span>` : ''}
             document.getElementById('drawer').classList.toggle('open');
         }
 
+        function getCustomerName() {
+            const input = document.getElementById('customerName');
+            const validation = document.getElementById('customerValidation');
+            const customerName = input.value.trim();
+
+            if (!customerName) {
+                validation.style.display = 'block';
+                input.focus();
+                return null;
+            }
+
+            validation.style.display = 'none';
+
+            return customerName;
+        }
+
         function copyOrder() {
             if (order.length === 0) {
                 alert('Tu pedido está vacío.');
                 return;
             }
 
-            const resumen = order.map(x => `• ${x.name}${x.variant ? ' - ' + x.variant : ''} — $${money(x.price)}`).join('\n');
+            const customerName = getCustomerName();
+
+            if (!customerName) {
+                return;
+            }
+
+            const resumen = order
+                .map(item =>
+                    `• ${item.name}${item.variant ? ' - ' + item.variant : ''} — $${money(item.price)}`
+                )
+                .join('\n');
+
             const total = document.getElementById('total').textContent;
 
-            navigator.clipboard?.writeText('Pedido Don Ramón Patisserie\\n\\n' + resumen + '\\n\\nTotal: $' + total);
-            alert('Resumen copiado.');
+            const texto =
+                `Pedido Don Ramón Patisserie\n\n` +
+                `Nombre del solicitante: ${customerName}\n\n` +
+                `Pedido:\n${resumen}\n\n` +
+                `Total: $${total}`;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(texto)
+                    .then(() => alert('Resumen copiado.'))
+                    .catch(() => alert('No fue posible copiar el resumen.'));
+            } else {
+                alert('Tu navegador no permite copiar automáticamente el resumen.');
+            }
         }
 
         function sendWhatsApp() {
@@ -700,14 +924,30 @@ ${x.variant ? `<span class="row-variant">${x.variant}</span>` : ''}
                 return;
             }
 
+            const customerName = getCustomerName();
+
+            if (!customerName) {
+                return;
+            }
+
             const numero = '5491156940434';
 
-            const lineas = order.map(x => `• ${x.name}${x.variant ? ' - ' + x.variant : ''} — $${money(x.price)}`).join('\\n');
+            const lineas = order
+                .map(item =>
+                    `• ${item.name}${item.variant ? ' - ' + item.variant : ''} — $${money(item.price)}`
+                )
+                .join('\n');
+
             const total = document.getElementById('total').textContent;
 
-            const mensaje = `Hola! Quiero hacer este pedido en Don Ramón Patisserie:\\n\\n${lineas}\\n\\nTotal: $${total}`;
+            const mensaje =
+                `Hola! Quiero hacer este pedido en Don Ramón Patisserie:\n\n` +
+                `Nombre del solicitante: ${customerName}\n\n` +
+                `Pedido:\n${lineas}\n\n` +
+                `Total: $${total}`;
 
             const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+
             window.open(url, '_blank');
         }
 
@@ -736,17 +976,31 @@ ${x.variant ? `<span class="row-variant">${x.variant}</span>` : ''}
 
                 if (file) {
                     const photo = card.querySelector('.photo');
-                    photo.innerHTML = `<img src="02-banco-visual/${file}" alt="${name}" loading="lazy">`;
+
+                    photo.innerHTML = `
+                        <img
+                            src="02-banco-visual/${file}"
+                            alt="${name}"
+                            loading="lazy"
+                        >
+                    `;
                 }
             });
         }
 
         function init() {
-            const cats = ['Todas', ...new Set(items.map(x => x[1]))];
+            const cats = ['Todas', ...new Set(items.map(item => item[1]))];
 
-            document.getElementById('tabs').innerHTML = cats.map(x =>
-                `<button class="tab ${x === 'Todas' ? 'active' : ''}" onclick="selectCategory('${x.replace(/'/g, "\\'")}',this)">${x}</button>`
-            ).join('');
+            document.getElementById('tabs').innerHTML = cats
+                .map(category => `
+                    <button
+                        class="tab ${category === 'Todas' ? 'active' : ''}"
+                        onclick="selectCategory('${category.replace(/'/g, "\\'")}', this)"
+                    >
+                        ${category}
+                    </button>
+                `)
+                .join('');
 
             render();
             update();
@@ -754,13 +1008,24 @@ ${x.variant ? `<span class="row-variant">${x.variant}</span>` : ''}
 
         function selectCategory(category, button) {
             cat = category;
-            document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
             button.classList.add('active');
+
             render();
         }
 
         document.getElementById('search').oninput = render;
         document.getElementById('sort').onchange = render;
+
+        document.getElementById('customerName').addEventListener('input', function () {
+            if (this.value.trim()) {
+                document.getElementById('customerValidation').style.display = 'none';
+            }
+        });
 
         init();
     </script>
