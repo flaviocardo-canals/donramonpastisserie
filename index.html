@@ -1242,7 +1242,7 @@
                 <span>Horarios: martes a sábados 7–13 y 16–19 · domingos 8–13</span>
             </div>
 
-            <p class="availability-badge" id="availabilityBadge"></p>
+          
         </div>
 
         <button class="cart" id="cartButton" onclick="toggleCart()" aria-label="Ver pedido">
@@ -1282,7 +1282,9 @@
             <button class="quick-filter active" data-filter="all" onclick="selectQuickFilter('all', this)">
                 Todo el menú
             </button>
-
+            <button class="quick-filter" data-filter="available" onclick="selectQuickFilter('available', this)">
+                Disponible hoy
+            </button>
            
         </div>
 
@@ -1324,11 +1326,9 @@
             </div>
 
             <div class="footer-note">
-                 <button class="quick-filter" data-filter="available" onclick="selectQuickFilter('available', this)">
-                    Disponible hoy
-                </button>
                 Precios sujetos a modificación sin previo aviso.<br>
                 Consultar disponibilidad del día.
+                  <p class="availability-badge" id="availabilityBadge"></p>
             </div>
         </section>
     </div>
