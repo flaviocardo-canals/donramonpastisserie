@@ -1235,14 +1235,14 @@
     <header>
         <div class="don-ramon">
             <h1 class="titulo">DON RAMÓN PÂTISSERIE</h1>
-            <p>Pastelería artesanal y café al paso · Hecho con amor</p>
+            <p>Pastelería artesanal y café al paso · Hecho con amor ❤ </p>
 
             <div class="shop-status">
                 <span class="shop-status-dot"></span>
-                <span>Horarios: martes a sábados 7–13 y 16–19 · domingos 8–13</span>
+                <span>Horarios: Martes a sábados 7 a 13 hs. y de 16 a 19 hs.· Domingos 8 a 13 hs.</span>
             </div>
 
-            <p class="availability-badge" id="availabilityBadge"></p>
+          
         </div>
 
         <button class="cart" id="cartButton" onclick="toggleCart()" aria-label="Ver pedido">
@@ -1282,10 +1282,10 @@
             <button class="quick-filter active" data-filter="all" onclick="selectQuickFilter('all', this)">
                 Todo el menú
             </button>
-
             <button class="quick-filter" data-filter="available" onclick="selectQuickFilter('available', this)">
                 Disponible hoy
             </button>
+           
         </div>
 
         <nav class="tabs" id="tabs" aria-label="Categorías de productos"></nav>
@@ -1326,13 +1326,15 @@
             </div>
 
             <div class="footer-note">
+                <p class="availability-badge" id="availabilityBadge"></p><br>
                 Precios sujetos a modificación sin previo aviso.<br>
                 Consultar disponibilidad del día.
+                  
             </div>
         </section>
     </div>
 
-    <footer>Don Ramón Pâtisserie · Menú digital</footer>
+   
 
     <aside class="drawer" id="drawer" aria-label="Tu pedido">
         <div class="drawer-sticky-header">
@@ -1462,16 +1464,6 @@
                 const key = `${producto.nombre}::${variantName}`;
                 variantMeta.set(key, { precioId: p.id, stock: p.stock });
             });
-
-            // Producto con un solo precio: la carta lo trata como "sin variantes"
-            // (variante = null), aunque en la base tenga asignado un tamaño como "Único".
-            // Registramos también la clave sin tamaño para que encuentre su id y su stock.
-            if (preciosActivos.length === 1) {
-                variantMeta.set(`${producto.nombre}::`, {
-                    precioId: preciosActivos[0].id,
-                    stock: preciosActivos[0].stock
-                });
-            }
 
             if (producto.rubro) {
                 rubroOrderMap.set(producto.rubro.nombre, producto.rubro.orden ?? 999);
@@ -1769,26 +1761,20 @@
             const registros = construirRegistrosDeVenta();
             if (registros.length === 0) return { ok: true };
 
-            console.log('registrar_venta_whatsapp_lote → registros enviados:', registros);
-
             const { error } = await supabaseClient.rpc('registrar_venta_whatsapp_lote', {
                 p_items: registros
             });
 
             if (error) {
-                console.error('registrar_venta_whatsapp_lote → error de Supabase:', error);
-
                 await refreshMenu();
                 renderVistaActual();
                 renderFeaturedPromos();
 
                 return {
                     ok: false,
-                    message: `No se pudo confirmar el pedido: ${error.message}`
+                    message: 'No hay stock suficiente para confirmar el pedido completo. Actualizamos el menú — revisá las cantidades e intentá de nuevo.'
                 };
             }
-
-            console.log('registrar_venta_whatsapp_lote → OK, sin error devuelto por Supabase');
 
             await refreshMenu();
             renderVistaActual();
@@ -2742,11 +2728,7 @@
             document.body.removeChild(textarea);
         }
 
-        let enviandoPedido = false;
-
         async function sendWhatsApp() {
-            if (enviandoPedido) return;
-
             if (order.length === 0) {
                 alert('Tu pedido está vacío.');
                 return;
@@ -2758,8 +2740,16 @@
                 return;
             }
 
-            // El mensaje se arma ANTES de registrar la venta, con el carrito completo.
-            const numero = '5491156940434';
+            const stockResult = await registrarVentaYDescontarStock();
+
+            if (!stockResult.ok) {
+                alert(stockResult.message);
+                return;
+            }
+
+            saveLastOrder();
+
+            const numero = '5491156372876';
 
             const message =
                 `Hola! Quiero hacer este pedido en Don Ramón Pâtisserie:\n\n` +
@@ -2769,33 +2759,7 @@
 
             const url = `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
 
-            enviandoPedido = true;
-
-            try {
-                const stockResult = await registrarVentaYDescontarStock();
-
-                if (!stockResult.ok) {
-                    alert(stockResult.message);
-                    return;
-                }
-
-                saveLastOrder();
-
-                window.open(url, '_blank', 'noopener');
-
-                // Pedido confirmado: se vacía el carrito para que un segundo clic
-                // no registre la misma venta otra vez. "Repetir último pedido" lo recupera.
-                order = [];
-                update();
-                syncVistaActual();
-
-                document.getElementById('drawer').classList.remove('open');
-                setFabHidden(false);
-
-                showToast('✅ Pedido enviado');
-            } finally {
-                enviandoPedido = false;
-            }
+            window.open(url, '_blank', 'noopener');
         }
 
         /* ---------- Filtros y categorías ---------- */
