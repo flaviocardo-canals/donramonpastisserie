@@ -259,6 +259,47 @@
             color: #888;
         }
 
+        .badge-alerta {
+            background: #fbe3e3;
+            color: var(--danger);
+        }
+
+        .stock-bajo {
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .stock-alarma-detalle {
+            color: #88654c;
+            font-size: 11px;
+            font-weight: normal;
+        }
+
+        .alerta-stock {
+            margin-bottom: 14px;
+            padding: 12px 14px;
+            border: 1px solid #e3a5a5;
+            border-radius: 10px;
+            background: #fdf0f0;
+            color: var(--danger);
+            font-size: 13px;
+        }
+
+        .alerta-stock ul {
+            margin: 6px 0 0;
+            padding-left: 18px;
+        }
+
+        .tab-btn.tab-alerta {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .tab-btn.tab-alerta.active {
+            background: var(--danger);
+            color: white;
+        }
+
         .actions-cell {
             display: flex;
             gap: 6px;
@@ -607,9 +648,8 @@
 
     <script>
         // ⚠️ Completar con los mismos datos que en index.html
-        const SUPABASE_URL = 'https://eqnmjcdkfptsmaedgnjm.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxbm1qY2RrZnB0c21hZWRnbmptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwOTUxNTYsImV4cCI6MjEwNTY3MTE1Nn0.33PzbGkThx0SrNjwYQBvaBs8I297UIxP8gXJ3WfiuVA';
-
+        const SUPABASE_URL = 'TU_SUPABASE_URL_AQUI';
+        const SUPABASE_ANON_KEY = 'TU_SUPABASE_ANON_KEY_AQUI';
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -870,7 +910,7 @@
                 .select(`
                     *,
                     rubro:rubros ( nombre ),
-                    precios:producto_precios ( id, precio, stock, bcondicion, tamanio:tamanios ( id, nombre ) )
+                    precios:producto_precios ( id, precio, stock, alarma_stock, bcondicion, tamanio:tamanios ( id, nombre ) )
                 `)
                 .order('orden', { ascending: true });
 
@@ -885,15 +925,62 @@
             renderListaProductos();
         }
 
+        // Una variante está en "stock bajo" cuando está activa, tiene stock controlado,
+        // tiene alarma cargada, y stock <= alarma.
+        function esStockBajo(precio) {
+            return precio.bcondicion &&
+                precio.stock !== null && precio.stock !== undefined &&
+                precio.alarma_stock !== null && precio.alarma_stock !== undefined &&
+                precio.stock <= precio.alarma_stock;
+        }
+
+        function getVariantesStockBajo() {
+            const bajas = [];
+
+            productosCache.forEach(producto => {
+                if (!producto.bcondicion) return;
+
+                (producto.precios || []).forEach(precio => {
+                    if (esStockBajo(precio)) {
+                        bajas.push({ producto, precio });
+                    }
+                });
+            });
+
+            return bajas;
+        }
+
         function renderListaProductos() {
             const contenedor = document.getElementById('listaProductos');
+
+            const bajas = getVariantesStockBajo();
+
+            const tabBtn = document.querySelector('.tab-btn[data-tab="productos"]');
+            if (tabBtn) {
+                tabBtn.textContent = bajas.length > 0 ? `Productos ⚠ ${bajas.length}` : 'Productos';
+                tabBtn.classList.toggle('tab-alerta', bajas.length > 0);
+            }
 
             if (productosCache.length === 0) {
                 contenedor.innerHTML = '<p class="load-msg">Todavía no hay productos cargados.</p>';
                 return;
             }
 
-            contenedor.innerHTML = productosCache.map(producto => `
+            const bannerHtml = bajas.length > 0 ? `
+                <div class="alerta-stock">
+                    <strong>⚠ ${bajas.length} ${bajas.length === 1 ? 'variante con stock bajo' : 'variantes con stock bajo'}:</strong>
+                    <ul>
+                        ${bajas.map(({ producto, precio }) => `
+                            <li>
+                                ${escapeHtml(producto.nombre)}${precio.tamanio ? ' - ' + escapeHtml(precio.tamanio.nombre) : ''}:
+                                quedan ${precio.stock} (alarma en ${precio.alarma_stock})
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            ` : '';
+
+            contenedor.innerHTML = bannerHtml + productosCache.map(producto => `
                 <div class="producto-row">
                     <div class="producto-header" onclick="toggleProducto(${producto.id})">
                         <span>
@@ -901,8 +988,13 @@
                             <strong>${escapeHtml(producto.nombre)}</strong>
                             — ${escapeHtml(producto.rubro ? producto.rubro.nombre : 'Sin rubro')}
                         </span>
-                        <span class="badge ${producto.bcondicion ? 'badge-activo' : 'badge-inactivo'}">
-                            ${producto.bcondicion ? 'Activo' : 'Inactivo'}
+                        <span style="display:flex; gap:6px; align-items:center">
+                            ${producto.bcondicion && (producto.precios || []).some(esStockBajo)
+                                ? '<span class="badge badge-alerta">⚠ Stock bajo</span>'
+                                : ''}
+                            <span class="badge ${producto.bcondicion ? 'badge-activo' : 'badge-inactivo'}">
+                                ${producto.bcondicion ? 'Activo' : 'Inactivo'}
+                            </span>
                         </span>
                     </div>
 
@@ -936,15 +1028,21 @@
                                     <tr class="${precio.bcondicion ? '' : 'inactivo'}">
                                         <td>${precio.tamanio ? escapeHtml(precio.tamanio.nombre) : 'Único'}</td>
                                         <td>$${precio.precio}</td>
-                                        <td>${precio.stock === null ? 'Sin control' : precio.stock}</td>
+                                        <td class="${esStockBajo(precio) ? 'stock-bajo' : ''}">
+                                            ${precio.stock === null ? 'Sin control' : precio.stock}
+                                            ${precio.alarma_stock !== null && precio.alarma_stock !== undefined
+                                                ? `<span class="stock-alarma-detalle">(alarma ≤ ${precio.alarma_stock})</span>`
+                                                : ''}
+                                        </td>
                                         <td>
                                             <span class="badge ${precio.bcondicion ? 'badge-activo' : 'badge-inactivo'}">
                                                 ${precio.bcondicion ? 'Activo' : 'Inactivo'}
                                             </span>
+                                            ${esStockBajo(precio) ? '<span class="badge badge-alerta">⚠ Stock bajo</span>' : ''}
                                         </td>
                                         <td class="actions-cell">
-                                            <button class="btn btn-sm btn-secondary" onclick="editarVariante(${precio.id}, ${precio.precio}, ${precio.stock === null ? 'null' : precio.stock})">
-                                                Editar precio/stock
+                                            <button class="btn btn-sm btn-secondary" onclick="editarVariante(${precio.id}, ${precio.precio}, ${precio.stock === null ? 'null' : precio.stock}, ${precio.alarma_stock === null || precio.alarma_stock === undefined ? 'null' : precio.alarma_stock})">
+                                                Editar precio/stock/alarma
                                             </button>
                                             <button class="btn btn-sm btn-secondary" onclick="toggleCondicion('producto_precios', ${precio.id}, ${!precio.bcondicion}, cargarProductos)">
                                                 ${precio.bcondicion ? 'Baja' : 'Reactivar'}
@@ -972,6 +1070,10 @@
                             <div class="field">
                                 <label>Stock (vacío = sin control)</label>
                                 <input type="number" id="nuevoStock-${producto.id}">
+                            </div>
+                            <div class="field">
+                                <label>Alarma de stock (opcional)</label>
+                                <input type="number" min="0" id="nuevoAlarma-${producto.id}" placeholder="Avisar si queda ≤">
                             </div>
                             <button class="btn btn-sm" onclick="agregarVariante(${producto.id})">
                                 Agregar variante
@@ -1052,9 +1154,21 @@
             const precio = Number(document.getElementById('nuevoPrecio-' + productoId).value);
             const stockRaw = document.getElementById('nuevoStock-' + productoId).value;
             const stock = stockRaw === '' ? null : Number(stockRaw);
+            const alarmaRaw = document.getElementById('nuevoAlarma-' + productoId).value;
+            const alarma_stock = alarmaRaw === '' ? null : Number(alarmaRaw);
 
             if (!precio || precio <= 0) {
                 alert('Ingresá un precio válido.');
+                return;
+            }
+
+            if (alarma_stock !== null && (!Number.isInteger(alarma_stock) || alarma_stock < 0)) {
+                alert('La alarma de stock tiene que ser un número entero, 0 o mayor.');
+                return;
+            }
+
+            if (alarma_stock !== null && stock === null) {
+                alert('Para usar una alarma tenés que cargar también el stock (sin stock no hay nada que controlar).');
                 return;
             }
 
@@ -1062,7 +1176,8 @@
                 producto_id: productoId,
                 tamanio_id: tamanioId,
                 precio,
-                stock
+                stock,
+                alarma_stock
             });
 
             if (error) {
@@ -1075,7 +1190,7 @@
             document.getElementById('producto-body-' + productoId)?.classList.add('open');
         }
 
-        async function editarVariante(precioId, precioActual, stockActual) {
+        async function editarVariante(precioId, precioActual, stockActual, alarmaActual) {
             const nuevoPrecioRaw = prompt('Nuevo precio:', precioActual);
             if (nuevoPrecioRaw === null) return;
 
@@ -1093,9 +1208,32 @@
 
             const nuevoStock = nuevoStockRaw.trim() === '' ? null : Number(nuevoStockRaw);
 
+            if (nuevoStock !== null && (!Number.isInteger(nuevoStock) || nuevoStock < 0)) {
+                alert('El stock tiene que ser un número entero, 0 o mayor.');
+                return;
+            }
+
+            const nuevaAlarmaRaw = prompt(
+                'Alarma de stock: avisar cuando el stock sea menor o igual a… (dejar vacío para "sin alarma"):',
+                alarmaActual === null || alarmaActual === undefined ? '' : alarmaActual
+            );
+            if (nuevaAlarmaRaw === null) return;
+
+            const nuevaAlarma = nuevaAlarmaRaw.trim() === '' ? null : Number(nuevaAlarmaRaw);
+
+            if (nuevaAlarma !== null && (!Number.isInteger(nuevaAlarma) || nuevaAlarma < 0)) {
+                alert('La alarma tiene que ser un número entero, 0 o mayor.');
+                return;
+            }
+
+            if (nuevaAlarma !== null && nuevoStock === null) {
+                alert('Para usar una alarma tenés que cargar también el stock (sin stock no hay nada que controlar).');
+                return;
+            }
+
             const { error } = await supabaseClient
                 .from('producto_precios')
-                .update({ precio: nuevoPrecio, stock: nuevoStock })
+                .update({ precio: nuevoPrecio, stock: nuevoStock, alarma_stock: nuevaAlarma })
                 .eq('id', precioId);
 
             if (error) {
